@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_variables.dart';
-import 'package:job_finder/features/auth/screens/auth_screen.dart';
+import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = "/splash";
@@ -82,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
                         context, 
-                        AuthScreen.routeName, 
+                        SignInScreen.routeName, 
                         (route) => false);
                     },
                     child: Image.asset("assets/icons/forward_icon.png"),

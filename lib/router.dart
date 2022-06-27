@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:job_finder/features/auth/screens/auth_screen.dart';
+import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
+import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -12,10 +13,16 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => SplashScreen()
         );
 
-    case AuthScreen.routeName:
+    case SignInScreen.routeName:
       return MaterialPageRoute(
         settings: routeSettings,
-        builder: (_) => AuthScreen()
+        builder: (_) => SignInScreen()
+      );
+
+    case SignUpScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (_) => SignUpScreen()
       );
       
     default:
