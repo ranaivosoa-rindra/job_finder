@@ -3,13 +3,28 @@
 import 'package:flutter/material.dart';
 
 class CustomFormField extends StatefulWidget {
-  const CustomFormField({Key? key}) : super(key: key);
+  final bool withSuffixIcon;
+  final Icon? suffixIconShown;
+  final Icon? suffixIconHiden;
+  const CustomFormField(
+      {Key? key,
+      required this.withSuffixIcon,
+      this.suffixIconShown,
+      this.suffixIconHiden,})
+      : super(key: key);
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
 }
 
 class _CustomFormFieldState extends State<CustomFormField> {
+  bool _isObscureText = true;
+
+  void toogle(){
+    setState(() {
+      _isObscureText = !_isObscureText;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,12 +40,28 @@ class _CustomFormFieldState extends State<CustomFormField> {
       ),
       child: TextFormField(
         decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide.none,
-            ),
-            filled: true,
-            fillColor: Colors.white),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white,
+          suffixIcon: (widget.withSuffixIcon == false)
+              ? null
+              : InkWell(
+                  onTap: toogle,
+                  child: (_isObscureText == true) 
+                  ? widget.suffixIconShown
+                  : widget.suffixIconHiden
+                  ,
+                ),
+        ),
+        obscureText: (widget.withSuffixIcon == false)
+          ? false
+          : (_isObscureText == true) 
+          ? false
+          : true
+        ,
       ),
     );
   }
