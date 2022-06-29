@@ -6,12 +6,14 @@ class CustomFormField extends StatefulWidget {
   final bool withSuffixIcon;
   final Icon? suffixIconShown;
   final Icon? suffixIconHiden;
-  const CustomFormField(
-      {Key? key,
-      required this.withSuffixIcon,
-      this.suffixIconShown,
-      this.suffixIconHiden,})
-      : super(key: key);
+  final String? hintText;
+  const CustomFormField({
+    Key? key,
+    required this.withSuffixIcon,
+    this.suffixIconShown,
+    this.suffixIconHiden, 
+    this.hintText,
+  }) : super(key: key);
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();
@@ -20,11 +22,12 @@ class CustomFormField extends StatefulWidget {
 class _CustomFormFieldState extends State<CustomFormField> {
   bool _isObscureText = true;
 
-  void toogle(){
+  void toogle() {
     setState(() {
       _isObscureText = !_isObscureText;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,6 +43,10 @@ class _CustomFormFieldState extends State<CustomFormField> {
       ),
       child: TextFormField(
         decoration: InputDecoration(
+          hintText: widget.hintText,
+          hintStyle: TextStyle(
+            color: Color(0xFF0D0140).withOpacity(0.5),
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide.none,
@@ -50,18 +57,16 @@ class _CustomFormFieldState extends State<CustomFormField> {
               ? null
               : InkWell(
                   onTap: toogle,
-                  child: (_isObscureText == true) 
-                  ? widget.suffixIconShown
-                  : widget.suffixIconHiden
-                  ,
+                  child: (_isObscureText == true)
+                      ? widget.suffixIconShown
+                      : widget.suffixIconHiden,
                 ),
         ),
         obscureText: (widget.withSuffixIcon == false)
-          ? false
-          : (_isObscureText == true) 
-          ? false
-          : true
-        ,
+            ? false
+            : (_isObscureText == true)
+                ? false
+                : true,
       ),
     );
   }

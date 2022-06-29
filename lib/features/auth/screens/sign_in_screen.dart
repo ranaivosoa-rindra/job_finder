@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_button.dart';
@@ -26,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
             reverse: true,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 17, vertical: 30),
-              child: Flexible(
+              child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -82,7 +82,10 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           subtitle: Form(
-                            child: CustomFormField(withSuffixIcon: false,),
+                            child: CustomFormField(
+                              withSuffixIcon: false,
+                              hintText: "ranaivosoarindra3@gmail.com",
+                            ),
                           ),
                         ),
                         SizedBox(height: 15),
@@ -101,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: CustomFormField(
                               withSuffixIcon: true,
                               suffixIconHiden: Icon(Icons.visibility_off),
-                              suffixIconShown: Icon(Icons.visibility)
+                              suffixIconShown: Icon(Icons.visibility),
                             ),
                           ),
                         ),
