@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
@@ -118,7 +119,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               ],
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+                              },
                               child: Text(
                                 "Forgot Password ?",
                                 style: TextStyle(

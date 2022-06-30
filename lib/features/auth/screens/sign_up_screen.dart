@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
@@ -19,7 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-return GestureDetector(
+  return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(), // set focus out when the user click anywhere else
       child: Scaffold(
         body: SafeArea(
@@ -132,7 +133,9 @@ return GestureDetector(
                               ],
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+                              },
                               child: Text(
                                 "Forgot Password ?",
                                 style: TextStyle(
@@ -168,7 +171,7 @@ return GestureDetector(
                           onTap: () {},
                           text: "sign up with google",
                           backgroundColor: GlobalVariables.tertiaryColor,
-                          textColor: GlobalVariables.primaryColor,
+                          textColor: Colors.white,
                           withIcon: true,
                           imageAsset: "assets/icons/google_icon.png",
                         ),

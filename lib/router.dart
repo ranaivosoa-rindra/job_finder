@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
@@ -29,22 +30,22 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c)
       );
 
-  //   case SignInScreen.routeName:
-  //     return PageRouteBuilder(
-  //   pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
-  //   transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //     const begin = Offset(1.0, 0.0);
-  //     const end = Offset.zero;
-  //     const curve = Curves.ease;
+    case ForgotPasswordScreen.routeName:
+      return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => ForgotPasswordScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
 
-  //     var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-  //     return SlideTransition(
-  //       position: animation.drive(tween),
-  //       child: child,
-  //     );
-  //   },
-  // );
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 
 
   //   case SignUpScreen.routeName:
