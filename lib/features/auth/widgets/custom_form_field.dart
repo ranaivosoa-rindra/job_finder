@@ -20,7 +20,7 @@ class CustomFormField extends StatefulWidget {
 }
 
 class _CustomFormFieldState extends State<CustomFormField> {
-  bool _isObscureText = true;
+  bool _isObscureText = false;
 
   void toogle() {
     setState(() {
@@ -42,6 +42,10 @@ class _CustomFormFieldState extends State<CustomFormField> {
         ],
       ),
       child: TextFormField(
+        initialValue: (widget.withSuffixIcon == true) 
+        ? "password123"
+        : null
+        ,
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(

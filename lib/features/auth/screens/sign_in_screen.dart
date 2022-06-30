@@ -5,8 +5,6 @@ import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
-import 'package:job_finder/router.dart';
-import 'package:page_transition/page_transition.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = "/signin";
