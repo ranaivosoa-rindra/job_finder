@@ -10,27 +10,66 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case SplashScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, 
-          builder: (_) => SplashScreen()
+          builder: (_) => SplashScreen(),
         );
 
+    // case SignInScreen.routeName:
+    //   return PageRouteBuilder(
+    //     settings: routeSettings,
+    //     // builder: (_) => SignInScreen(), 
+    //     pageBuilder: (_, __, ___) => SignInScreen(),
+    //     transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c)
+    //   );
+
+    // case SignUpScreen.routeName:
+    //   return PageRouteBuilder(
+    //     settings: routeSettings,
+    //     // builder: (_) => SignUpScreen()
+    //     pageBuilder: (_, __, ___) => SignUpScreen(),
+    //     transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c)
+    //   );
+
     case SignInScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => SignInScreen()
+      return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => SignInScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
       );
+    },
+  );
+
 
     case SignUpScreen.routeName:
-      return MaterialPageRoute(
-        settings: routeSettings,
-        builder: (_) => SignUpScreen()
+      return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => SignUpScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
       );
+    },
+  );
       
     default:
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => Scaffold(
           body: Center(
-            child: Text("data"),
+            child: Text("No screen found"),
           ),
         ) 
     );

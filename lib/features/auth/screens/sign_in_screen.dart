@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
-
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
+import 'package:job_finder/features/auth/widgets/header.dart';
+import 'package:job_finder/router.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = "/signin";
@@ -19,7 +21,8 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(), // set focus out when the user click anywhere else
+      onTap: () => FocusManager.instance.primaryFocus
+          ?.unfocus(), // set focus out when the user click anywhere else
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -30,43 +33,16 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Welcome
-                        Text(
-                          "Welcome Back",
-                          style: TextStyle(
-                            color: GlobalVariables.primaryColor,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold
-                          ),  
-                        ),
-          
-                        SizedBox(
-                          height: 10,
-                        ),
-          
-                        // top text
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Text(
-                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              height:1.5,
-                              color: Color(0xFF524B6B),
-                              fontWeight: FontWeight.w400
-                            )
-                          ),
-                        ),
-                      ],
-                    ),
-    
+                    // header
+                    Header(
+                        headerTitle: "Welcome Back",
+                        headerText:
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"),
+
                     SizedBox(
                       height: 50,
                     ),
-    
+
                     // Form
                     Column(
                       children: [
@@ -97,7 +73,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               style: TextStyle(
                                 color: Color(0xFF0D0140),
                                 fontWeight: FontWeight.bold,
-                              ),  
+                              ),
                             ),
                           ),
                           subtitle: Form(
@@ -108,9 +84,9 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                         ),
-          
+
                         SizedBox(height: 10),
-          
+
                         // form specific
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,8 +97,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                   scale: 1.50,
                                   child: Checkbox(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4)),
-                                      checkColor: GlobalVariables.secondaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      checkColor:
+                                          GlobalVariables.secondaryColor,
                                       activeColor: Color(0xFFE6E1FF),
                                       value: isChecked,
                                       onChanged: (bool? val) {
@@ -137,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     color: Color(0xFFAAA6B9),
                                     fontWeight: FontWeight.w400,
                                     fontSize: 15,
-                                  ),  
+                                  ),
                                 ),
                               ],
                             ),
@@ -149,16 +127,18 @@ class _SignInScreenState extends State<SignInScreen> {
                                   color: Color(0xFF0D0140),
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15,
-                                ),  
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-    
-                    SizedBox(height: 37,),
-          
+
+                    SizedBox(
+                      height: 37,
+                    ),
+
                     Column(
                       children: [
                         /// Buttons
@@ -170,9 +150,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           textColor: Colors.white,
                           withIcon: false,
                         ),
-          
+
                         SizedBox(height: 20),
-          
+
                         // google button
                         GlobalButton(
                           onTap: () {},
@@ -182,9 +162,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           withIcon: true,
                           imageAsset: "assets/icons/google_icon.png",
                         ),
-          
+
                         SizedBox(height: 15),
-          
+
                         // go to sign up
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -198,15 +178,15 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             InkWell(
                               onTap: () {
+                                // Navigator.pushNamed(context, SignUpScreen.routeName);
                                 Navigator.pushNamed(context, SignUpScreen.routeName);
                               },
                               child: Text(
                                 "Sign up",
                                 style: TextStyle(
-                                  color: Color(0xFFFF9228),
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.underline
-                                ),
+                                    color: Color(0xFFFF9228),
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline),
                               ),
                             ),
                           ],
