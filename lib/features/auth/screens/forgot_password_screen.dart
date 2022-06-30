@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 
@@ -23,9 +24,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                 children: [
                   // header
                   Header(
-                    headerText: "To reset your password, you need your email or mobile number that can be authenticated?",
-                    headerTitle:
-                        "Forgot Password?",
+                    headerText:
+                        "To reset your password, you need your email or mobile number that can be authenticated?",
+                    headerTitle: "Forgot Password?",
                   ),
 
                   SizedBox(
@@ -65,24 +66,27 @@ class ForgotPasswordScreen extends StatelessWidget {
 
                   // buttons
                   GlobalButton(
-                    onTap: (){}, 
-                    text: "reset password", 
-                    backgroundColor: GlobalVariables.primaryColor, 
-                    textColor: Colors.white, 
-                    withIcon: false
-                  ),
+                      onTap: () {},
+                      text: "reset password",
+                      backgroundColor: GlobalVariables.primaryColor,
+                      textColor: Colors.white,
+                      withIcon: false),
 
                   SizedBox(
                     height: 30,
                   ),
 
                   GlobalButton(
-                    onTap: (){}, 
-                    text: "back to login", 
-                    backgroundColor: GlobalVariables.tertiaryColor, 
-                    textColor: Colors.white, 
-                    withIcon: false
-                  ),
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          SignInScreen.routeName
+                        );
+                      },
+                      text: "back to login",
+                      backgroundColor: GlobalVariables.tertiaryColor,
+                      textColor: Colors.white,
+                      withIcon: false),
                 ],
               ),
             ),
