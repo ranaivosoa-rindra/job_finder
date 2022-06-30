@@ -20,8 +20,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-  return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(), // set focus out when the user click anywhere else
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus
+          ?.unfocus(), // set focus out when the user click anywhere else
       child: Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
@@ -33,12 +34,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // header
-                    Header(headerTitle: "Create an Account", headerText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"),
-    
+                    Header(
+                        headerTitle: "Create an Account",
+                        headerText:
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"),
+
                     SizedBox(
                       height: 50,
                     ),
-    
+
                     // Form
                     Column(
                       children: [
@@ -88,7 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               style: TextStyle(
                                 color: Color(0xFF0D0140),
                                 fontWeight: FontWeight.bold,
-                              ),  
+                              ),
                             ),
                           ),
                           subtitle: Form(
@@ -99,9 +103,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
-          
+
                         SizedBox(height: 10),
-          
+
                         // form specific
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,8 +116,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   scale: 1.50,
                                   child: Checkbox(
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4)),
-                                      checkColor: GlobalVariables.secondaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      checkColor:
+                                          GlobalVariables.secondaryColor,
                                       activeColor: Color(0xFFE6E1FF),
                                       value: isChecked,
                                       onChanged: (bool? val) {
@@ -128,13 +134,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     color: Color(0xFFAAA6B9),
                                     fontWeight: FontWeight.w400,
                                     fontSize: 15,
-                                  ),  
+                                  ),
                                 ),
                               ],
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, ForgotPasswordScreen.routeName);
                               },
                               child: Text(
                                 "Forgot Password ?",
@@ -142,30 +149,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   color: Color(0xFF0D0140),
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15,
-                                ),  
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-    
-                    SizedBox(height: 37,),
-          
+
+                    SizedBox(
+                      height: 37,
+                    ),
+
                     Column(
                       children: [
                         /// Buttons
                         // login button
                         GlobalButton(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, SignInScreen.routeName);
+                          },
                           text: "sign up",
                           backgroundColor: GlobalVariables.primaryColor,
                           textColor: Colors.white,
                           withIcon: false,
                         ),
-          
+
                         SizedBox(height: 20),
-          
+
                         // google button
                         GlobalButton(
                           onTap: () {},
@@ -175,9 +187,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           withIcon: true,
                           imageAsset: "assets/icons/google_icon.png",
                         ),
-          
+
                         SizedBox(height: 15),
-          
+
                         // go to sign up
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -191,15 +203,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.pushNamed(context, SignInScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, SignInScreen.routeName);
                               },
                               child: Text(
                                 "Sign in",
                                 style: TextStyle(
-                                  color: Color(0xFFFF9228),
-                                  fontWeight: FontWeight.w600,
-                                  decoration: TextDecoration.underline
-                                ),
+                                    color: Color(0xFFFF9228),
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline),
                               ),
                             ),
                           ],

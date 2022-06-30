@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:job_finder/features/auth/screens/check_email_screen.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
+import 'package:job_finder/features/auth/screens/successfully_reset_password_screen.dart';
+import 'package:job_finder/features/home/screens/homescreen.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -48,22 +51,56 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
   );
 
 
-  //   case SignUpScreen.routeName:
-  //     return PageRouteBuilder(
-  //   pageBuilder: (context, animation, secondaryAnimation) => SignUpScreen(),
-  //   transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //     const begin = Offset(1.0, 0.0);
-  //     const end = Offset.zero;
-  //     const curve = Curves.ease;
+    case CheckEmail.routeName:
+      return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => CheckEmail(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
 
-  //     var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-  //     return SlideTransition(
-  //       position: animation.drive(tween),
-  //       child: child,
-  //     );
-  //   },
-  // );
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+
+    case SucceffullyResetPasswordScreen.routeName:
+      return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => SucceffullyResetPasswordScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+
+      case HomeScreen.routeName:
+      return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
       
     default:
       return MaterialPageRoute(

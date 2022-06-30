@@ -6,6 +6,7 @@ import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
+import 'package:job_finder/features/home/screens/homescreen.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = "/signin";
@@ -120,7 +121,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.pushNamed(context, ForgotPasswordScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, ForgotPasswordScreen.routeName);
                               },
                               child: Text(
                                 "Forgot Password ?",
@@ -145,7 +147,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         /// Buttons
                         // login button
                         GlobalButton(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushNamed(context, HomeScreen.routeName);
+                          },
                           text: "login",
                           backgroundColor: GlobalVariables.primaryColor,
                           textColor: Colors.white,
@@ -180,7 +184,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             InkWell(
                               onTap: () {
                                 // Navigator.pushNamed(context, SignUpScreen.routeName);
-                                Navigator.pushNamed(context, SignUpScreen.routeName);
+                                Navigator.pushNamed(
+                                    context, SignUpScreen.routeName);
                               },
                               child: Text(
                                 "Sign up",

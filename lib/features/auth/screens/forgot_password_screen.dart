@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/screens/check_email_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
@@ -18,7 +19,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
+            child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 17, vertical: 30),
               child: Column(
                 children: [
@@ -66,7 +67,9 @@ class ForgotPasswordScreen extends StatelessWidget {
 
                   // buttons
                   GlobalButton(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, CheckEmail.routeName);
+                      },
                       text: "reset password",
                       backgroundColor: GlobalVariables.primaryColor,
                       textColor: Colors.white,
@@ -78,10 +81,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
                   GlobalButton(
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          SignInScreen.routeName
-                        );
+                        Navigator.pushNamed(context, SignInScreen.routeName);
                       },
                       text: "back to login",
                       backgroundColor: GlobalVariables.tertiaryColor,
