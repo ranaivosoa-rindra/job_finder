@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
-import 'package:job_finder/constants/global_button.dart';
+import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
@@ -18,6 +18,10 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isChecked = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -60,7 +64,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           subtitle: Form(
                             child: CustomFormField(
                               withSuffixIcon: false,
-                              hintText: "rindra",
+                              hintText: "rindra", 
+                              controller: _nameController, 
+                              hint: 'fullname',
                             ),
                           ),
                         ),
@@ -79,7 +85,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           subtitle: Form(
                             child: CustomFormField(
                               withSuffixIcon: false,
-                              hintText: "ranaivosoarindra3@gmail.com",
+                              hintText: "ranaivosoarindra3@gmail.com", 
+                              controller: _emailController, 
+                              hint: 'email',
                             ),
                           ),
                         ),
@@ -99,7 +107,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: CustomFormField(
                               withSuffixIcon: true,
                               suffixIconHiden: Icon(Icons.visibility_off),
-                              suffixIconShown: Icon(Icons.visibility),
+                              suffixIconShown: Icon(Icons.visibility), 
+                              controller: _passwordController, 
+                              hint: 'password',
                             ),
                           ),
                         ),

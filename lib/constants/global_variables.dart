@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+String uri = "https://testapp-to-lrn-fastap.herokuapp.com";
+
 class GlobalVariables {
   // colors
   static const primaryColor = Color(0xFF130160);

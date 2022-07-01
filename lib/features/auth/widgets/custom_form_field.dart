@@ -7,12 +7,15 @@ class CustomFormField extends StatefulWidget {
   final Icon? suffixIconShown;
   final Icon? suffixIconHiden;
   final String? hintText;
+  final String hint;
+  final TextEditingController controller;
   const CustomFormField({
     Key? key,
     required this.withSuffixIcon,
     this.suffixIconShown,
-    this.suffixIconHiden, 
+    this.suffixIconHiden,
     this.hintText,
+    required this.controller, required this.hint,
   }) : super(key: key);
 
   @override
@@ -42,10 +45,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         ],
       ),
       child: TextFormField(
-        initialValue: (widget.withSuffixIcon == true) 
-        ? "password123"
-        : null
-        ,
+        controller: widget.controller,
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: TextStyle(
@@ -71,6 +71,12 @@ class _CustomFormFieldState extends State<CustomFormField> {
             : (_isObscureText == true)
                 ? false
                 : true,
+        validator: (val) {
+          if (val == null || val.isEmpty) {
+            return "Enter your ${widget.hint}";
+          }
+          return null;
+        },
       ),
     );
   }

@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:job_finder/constants/global_bottom_bar.dart';
-import 'package:job_finder/constants/global_variables.dart';
-
+import 'package:job_finder/common/widgets/global_bottom_bar.dart';
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
   const HomeScreen({Key? key}) : super(key: key);

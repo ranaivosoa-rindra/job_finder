@@ -1,16 +1,24 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:job_finder/constants/global_button.dart';
+import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/check_email_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  static const String routeName = "/forgotpassword";
+class ForgotPasswordScreen extends StatefulWidget {
+ static const String routeName = "/forgotpassword";
   const ForgotPasswordScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final TextEditingController _emailontroller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +64,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                     subtitle: Form(
                       child: CustomFormField(
                         withSuffixIcon: false,
-                        hintText: "ranaivosoarindra3@gmail.com",
+                        hintText: "ranaivosoarindra3@gmail.com", 
+                        controller: _emailontroller, 
+                        hint: 'email',
                       ),
                     ),
                   ),
