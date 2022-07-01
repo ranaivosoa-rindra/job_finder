@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/home/screens/homescreen.dart';
 
-class AuthService {
+class AuthService{
   // Sign in a user
   void signInUser(
       {required BuildContext context,
@@ -20,8 +20,6 @@ class AuthService {
         "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8',
       },
     );
-
-    print(response);
 
     switch (response.statusCode) {
       case 200:

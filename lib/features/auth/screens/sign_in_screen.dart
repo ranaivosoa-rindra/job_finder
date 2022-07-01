@@ -1,5 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, dead_code
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, dead_code, use_build_context_synchronously
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:job_finder/common/shared/loading.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
@@ -9,9 +12,11 @@ import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:job_finder/features/home/screens/homescreen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:http/http.dart' as http;
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = "/signin";
+  static bool isLoading = false;
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,25 +24,89 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final AuthService authService = AuthService();
+  // final AuthService authService = AuthService();
   bool isChecked = false;
+  bool isLoading = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final _signInFormKey = GlobalKey<FormState>();
 
-  void signInUser() {
-    authService.signInUser(
-        context: context,
-        email: _emailController.text,
-        password: _passwordController.text);
+  void signInUser(
+      {required BuildContext context,
+      required String email,
+      required String password}) async {
+    // authService.signInUser(
+    //     context: context,
+    //     email: _emailController.text,
+    //     password: _passwordController.text);
+    // SignInScreen.isLoading = true;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    http.Response response = await http.post(
+      Uri.parse('$uri/login/token'),
+      body: {'username': email, 'password': password},
+      headers: {
+        "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+    );
+
+    switch (response.statusCode) {
+      case 200:
+        Navigator.pushNamed(context, HomeScreen.routeName);
+        break;
+
+      case 401:
+        final parsed = jsonDecode(response.body);
+        showDialog(
+            context: context,
+            builder: (BuildContext builder) {
+              return AlertDialog(
+                title: Text("Error"),
+                content: Text(parsed['detail']),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                  child: Text('OK'))
+                ],
+              );
+            });
+        break;
+
+      default:
+        final parsed = jsonDecode(response.body);
+        showDialog(
+            context: context,
+            builder: (BuildContext builder) {
+              return AlertDialog(
+                title: Text("Error"),
+                content: (parsed['detail'] == null || parsed['detail'] == "")
+                    ? Text("Not found")
+                    : Text(parsed['detail']),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('OK'))
+                ],
+              );
+            });
+        break;
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isLoading = false;
-
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus
           ?.unfocus(), // set focus out when the user click anywhere else
@@ -169,63 +238,31 @@ class _SignInScreenState extends State<SignInScreen> {
                             children: [
                               /// Buttons
                               // login button*
-
-                              GlobalButton(
-                                onTap: () {
-                                  // Navigator.pushNamed(context, HomeScreen.routeName);
-                                  if (_signInFormKey.currentState!.validate()) {
-                                    setState(() {
-                                      isLoading = true;
-                                    });
-                                    if (isLoading) {
-                                      AlertDialog alert = AlertDialog(
-                                        content: Row(children: [
-                                          CircularProgressIndicator(
-                                            backgroundColor: Colors.red,
-                                          ),
-                                          Container(margin: EdgeInsets.only(left: 7), child: Text("Loading...")),
-                                        ]),
-                                      );
-                                      showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return alert;
-                                        },
-                                      ); 
-                                    }
-                                    signInUser();
-                                  }
-                                },
-                                text: "login",
-                                backgroundColor: GlobalVariables.primaryColor,
-                                textColor: Colors.white,
-                                withIcon: false,
+                              SizedBox(
+                                height: 10,
                               ),
 
-
-                              // (!isLoading) 
-                              // ? GlobalButton(
-                              //     onTap: () {
-                              //       setState(() {
-                              //           isLoading = true;
-                              //         });
-                              //       // Navigator.pushNamed(context, HomeScreen.routeName);
-                              //       if (_signInFormKey.currentState!.validate()) {
-                              //         signInUser();
-                              //       }
-                              //     },
-                              //     text: "login",
-                              //     backgroundColor: GlobalVariables.primaryColor,
-                              //     textColor: Colors.white,
-                              //     withIcon: false,
-                              //   )
-                              // : Center(
-                              //   child: LoadingAnimationWidget.staggeredDotsWave(
-                              //     color: Colors.red,
-                              //     size: 50,
-                              //   ),
-                              // ),
+                            (isLoading) 
+                            ? Loading()
+                            : GlobalButton(
+                              onTap: () {
+                                // if (_signInFormKey.currentState!
+                                //     .validate()) {
+                                //   signInUser();
+                                //   // SignInScreen.isLoading = false;
+                                // }
+                                if (_signInFormKey.currentState!.validate()) {
+                                  signInUser(
+                                      context: context,
+                                      email: _emailController.text,
+                                      password: _passwordController.text);
+                                }
+                              },
+                              text: "login",
+                              backgroundColor: GlobalVariables.primaryColor,
+                              textColor: Colors.white,
+                              withIcon: false,
+                            ),
 
                               SizedBox(height: 20),
 
