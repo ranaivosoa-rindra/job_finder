@@ -77,6 +77,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
           }
           return null;
         },
+        keyboardType: TextInputType.emailAddress,
       ),
     );
   }
