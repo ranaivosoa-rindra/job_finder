@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, dead_code, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, dead_code, use_build_context_synchronously, avoid_print
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -47,6 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
       isLoading = true;
     });
 
+    try {
     http.Response response = await http.post(
       Uri.parse('$uri/login/token'),
       body: {'username': email, 'password': password},
@@ -73,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                  child: Text('OK'))
+                      child: Text('OK'))
                 ],
               );
             });
@@ -100,6 +101,10 @@ class _SignInScreenState extends State<SignInScreen> {
             });
         break;
     }
+    } catch (e) {
+      print(e);
+    }
+
     setState(() {
       isLoading = false;
     });
@@ -242,27 +247,30 @@ class _SignInScreenState extends State<SignInScreen> {
                                 height: 10,
                               ),
 
-                            (isLoading) 
-                            ? Loading()
-                            : GlobalButton(
-                              onTap: () {
-                                // if (_signInFormKey.currentState!
-                                //     .validate()) {
-                                //   signInUser();
-                                //   // SignInScreen.isLoading = false;
-                                // }
-                                if (_signInFormKey.currentState!.validate()) {
-                                  signInUser(
-                                      context: context,
-                                      email: _emailController.text,
-                                      password: _passwordController.text);
-                                }
-                              },
-                              text: "login",
-                              backgroundColor: GlobalVariables.primaryColor,
-                              textColor: Colors.white,
-                              withIcon: false,
-                            ),
+                              (isLoading)
+                                  ? Loading()
+                                  : GlobalButton(
+                                      onTap: () {
+                                        // if (_signInFormKey.currentState!
+                                        //     .validate()) {
+                                        //   signInUser();
+                                        //   // SignInScreen.isLoading = false;
+                                        // }
+                                        if (_signInFormKey.currentState!
+                                            .validate()) {
+                                          signInUser(
+                                              context: context,
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text);
+                                        }
+                                      },
+                                      text: "login",
+                                      backgroundColor:
+                                          GlobalVariables.primaryColor,
+                                      textColor: Colors.white,
+                                      withIcon: false,
+                                    ),
 
                               SizedBox(height: 20),
 
