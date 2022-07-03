@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/loading.dart';
+import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
@@ -58,66 +59,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       switch (response.statusCode) {
         case 200:
-          // Navigator.pushNamed(context, SignInScreen.routeName);
-          showDialog(
-              context: context,
-              builder: (BuildContext builder) {
-                return AlertDialog(
-                  title: Text("Success"),
-                  content: Text("User created sucessfuly"),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, SignInScreen.routeName);
-                        },
-                        child: Text('OK'))
-                  ],
-                );
-              });
-          break;
-
-        case 401:
-          final parsed = jsonDecode(response.body);
-          showDialog(
-              context: context,
-              builder: (BuildContext builder) {
-                return AlertDialog(
-                  title: Text("Error"),
-                  content: Text(parsed['detail']),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('OK'))
-                  ],
-                );
-              });
+          dialog(context, "Success", "User created sucessfully",
+              () => Navigator.pushNamed(context, SignInScreen.routeName), "OK");
           break;
 
         default:
           final parsed = jsonDecode(response.body);
-          showDialog(
-              context: context,
-              builder: (BuildContext builder) {
-                return AlertDialog(
-                  title: Text("Error"),
-                  content: (parsed['detail'] == null || parsed['detail'] == "")
-                      ? Text("Not found")
-                      : Text(parsed['detail']),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('OK'))
-                  ],
-                );
-              });
+          dialog(
+            context, 
+            "Error ${response.statusCode}", 
+            (parsed['detail'] == null || parsed['detail'] == "") 
+            ? "Not Found"
+            : parsed['detail']
+            ,
+              () => Navigator.pop(context), 
+              'OK');
           break;
       }
     } catch (e) {
-      print(e);
+      dialog(
+          context, "Error", e.toString(), () => Navigator.pop(context), 'OK');
     }
 
     setState(() {
@@ -279,24 +240,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               /// Buttons
                               // login button
 
-                              (isLoading) 
-                              ? Loading()
-                              : GlobalButton(
-                                onTap: () {
-                                  if (_signUpFormKey.currentState!.validate()) {
-                                    signUpUser(
-                                        context: context,
-                                        username: _nameController.text,
-                                        email: _emailController.text,
-                                        password: _passwordController.text
-                                      );
-                                  }
-                                },
-                                text: "sign up",
-                                backgroundColor: GlobalVariables.primaryColor,
-                                textColor: Colors.white,
-                                withIcon: false,
-                              ),
+                              (isLoading)
+                                  ? Loading()
+                                  : GlobalButton(
+                                      onTap: () {
+                                        if (_signUpFormKey.currentState!
+                                            .validate()) {
+                                          signUpUser(
+                                              context: context,
+                                              username: _nameController.text,
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text);
+                                        }
+                                      },
+                                      text: "sign up",
+                                      backgroundColor:
+                                          GlobalVariables.primaryColor,
+                                      textColor: Colors.white,
+                                      withIcon: false,
+                                    ),
 
                               SizedBox(height: 20),
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/loading.dart';
+import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
@@ -37,72 +38,46 @@ class _SignInScreenState extends State<SignInScreen> {
       {required BuildContext context,
       required String email,
       required String password}) async {
-    // authService.signInUser(
-    //     context: context,
-    //     email: _emailController.text,
-    //     password: _passwordController.text);
-    // SignInScreen.isLoading = true;
-
     setState(() {
       isLoading = true;
     });
 
     try {
-    http.Response response = await http.post(
-      Uri.parse('$uri/login/token'),
-      body: {'username': email, 'password': password},
-      headers: {
-        "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-    );
+      http.Response response = await http.post(
+        Uri.parse('$uri/login/token'),
+        body: {'username': email, 'password': password},
+        headers: {
+          "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+      );
 
-    switch (response.statusCode) {
-      case 200:
-        Navigator.pushNamed(context, HomeScreen.routeName);
-        break;
+      switch (response.statusCode) {
+        case 200:
+          Navigator.pushNamed(context, HomeScreen.routeName);
+          break;
 
-      case 401:
-        final parsed = jsonDecode(response.body);
-        showDialog(
-            context: context,
-            builder: (BuildContext builder) {
-              return AlertDialog(
-                title: Text("Error"),
-                content: Text(parsed['detail']),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('OK'))
-                ],
-              );
-            });
-        break;
+        case 401:
+          final parsed = jsonDecode(response.body);
+          dialog(context, "Error ${response.statusCode}", parsed['detail'],
+              () => Navigator.pop(context), 'OK');
+          break;
 
-      default:
-        final parsed = jsonDecode(response.body);
-        showDialog(
-            context: context,
-            builder: (BuildContext builder) {
-              return AlertDialog(
-                title: Text("Error"),
-                content: (parsed['detail'] == null || parsed['detail'] == "")
-                    ? Text("Not found")
-                    : Text(parsed['detail']),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('OK'))
-                ],
-              );
-            });
-        break;
-    }
+        default:
+          final parsed = jsonDecode(response.body);
+          dialog(
+            context, 
+            "Error ${response.statusCode}", 
+            (parsed['detail'] == null || parsed['detail'] == "") 
+            ? "Not Found"
+            : parsed['detail']
+            ,
+              () => Navigator.pop(context), 
+              'OK');
+          break;
+      }
     } catch (e) {
-      print(e);
+      dialog(
+          context, "Error", e.toString(), () => Navigator.pop(context), 'OK');
     }
 
     setState(() {
