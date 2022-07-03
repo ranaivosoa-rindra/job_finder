@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/common/widgets/global_bottom_bar.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/home/widgets/card.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -284,157 +285,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                 ),
 
-                Container(
-                  height: MediaQuery.of(context).size.width / 2.4,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.white, width: 1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 40,
-                                height: 40,
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFD6CDFE),
-                                  border: Border.all(
-                                      color: Color(0xFFD6CDFE), width: 1),
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.apple,
-                                    size: 30,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Product designer",
-                                      style: GoogleFonts.dmSans(
-                                          color: Color(0xFF150B3D),
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "Google inc . California, USA",
-                                      style: GoogleFonts.dmSans(
-                                        color:
-                                            Color(0xFF524B6B).withOpacity(0.8),
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Image.asset("assets/icons/Save_black.png")
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "\$15K",
-                            style: GoogleFonts.dmSans(
-                                color: Color(0xFF150B3D),
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "/Mo",
-                            style: GoogleFonts.dmSans(
-                              color: Color(0xFF524B6B).withOpacity(0.8),
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {},
-                            child: Material(
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10.0)),
-                                child: Container(
-                                  height: 30,
-                                  color: Color(0xFFCBC9D4).withOpacity(0.15),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 17, vertical: 5),
-                                  child: Text(
-                                    "Senior designer",
-                                    style: GoogleFonts.dmSans(
-                                        color: Color(0xFF150B3D),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: Material(
-                              child: ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10.0)),
-                                child: Container(
-                                  height: 30,
-                                  color: Color(0xFFCBC9D4).withOpacity(0.15),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 17, vertical: 5),
-                                  child: Text(
-                                    "Full Time",
-                                    style: GoogleFonts.dmSans(
-                                        color: Color(0xFF150B3D),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {},
-                            child: Material(
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(10.0)),
-                                child: Container(
-                                  height: 30,
-                                  color: Color(0xFFFF6B2C).withOpacity(0.2),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 17, vertical: 5),
-                                  child: Text(
-                                    "Apply",
-                                    style: GoogleFonts.dmSans(
-                                        color: Color(0xFF524B6B),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                JobCard(
+                  isImage: false, 
+                  jobLocation: 'Google inc . California, USA', 
+                  jobTitle: 'Product designer', 
+                  jobType: 'Full Time', 
+                  personType: 'Senior designer', 
+                  salary: '15',
+                  icon: Icon(Icons.apple),
                 ),
               ],
             ),
