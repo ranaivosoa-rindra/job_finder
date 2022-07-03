@@ -149,14 +149,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                   ),
                                 ),
-                                subtitle: Form(
-                                  child: CustomFormField(
+                                subtitle: CustomFormField(
                                     withSuffixIcon: false,
                                     hintText: "ranaivosoarindra3@gmail.com",
                                     controller: _emailController,
                                     hint: 'email',
                                   ),
-                                ),
                               ),
                               SizedBox(height: 15),
                               ListTile(

@@ -6,7 +6,7 @@ import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/screens/successfully_reset_password_screen.dart';
-import 'package:job_finder/features/home/screens/homescreen.dart';
+import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {

@@ -4,10 +4,17 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
+import 'package:job_finder/providers/user.provider.dart';
 import 'package:job_finder/router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider())
+      ], 
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

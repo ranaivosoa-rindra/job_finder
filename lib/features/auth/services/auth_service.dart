@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_finder/constants/global_variables.dart';
-import 'package:job_finder/features/home/screens/homescreen.dart';
+import 'package:job_finder/features/home/screens/home_screen.dart';
 
 class AuthService{
   // Sign in a user

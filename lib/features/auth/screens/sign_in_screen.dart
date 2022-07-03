@@ -11,7 +11,7 @@ import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
-import 'package:job_finder/features/home/screens/homescreen.dart';
+import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:http/http.dart' as http;
 

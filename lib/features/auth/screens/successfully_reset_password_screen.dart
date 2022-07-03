@@ -5,7 +5,7 @@ import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
-import 'package:job_finder/features/home/screens/homescreen.dart';
+import 'package:job_finder/features/home/screens/home_screen.dart';
 
 class SucceffullyResetPasswordScreen extends StatelessWidget {
   static const String routeName = "/sucessfulyreset";
