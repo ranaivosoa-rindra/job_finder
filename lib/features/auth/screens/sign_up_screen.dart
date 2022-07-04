@@ -33,6 +33,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool isLoading = false;
 
+  @override
+  void dispose(){
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+  }
+
   void signUpUser(
       {required BuildContext context,
       required String username,
@@ -46,6 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       email: email,
       password: password,
       username: username,
+      token: ""
     );
 
     try {

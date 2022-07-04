@@ -6,6 +6,8 @@ import 'package:job_finder/features/home/widgets/card.dart';
 import 'package:job_finder/features/home/widgets/card_header.dart';
 import 'package:job_finder/features/home/widgets/summary_cards_list.dart';
 import 'package:job_finder/features/home/widgets/top_header.dart';
+import 'package:job_finder/providers/user.provider.dart';
+import 'package:provider/provider.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+
     return SingleChildScrollView(
       child: SafeArea(
         child: Container(
@@ -27,6 +31,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               TopHeader(
                   username: "G. Rindra",
                   circleAvatarImage: "assets/images/rindra-photo.png"),
+
+              Center(child: Text(user.toJson()),),
               CardHeader(
                   percentRemise: "50",
                   onPress: () {},

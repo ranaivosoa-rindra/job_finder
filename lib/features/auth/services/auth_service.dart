@@ -7,70 +7,12 @@ import 'package:http/http.dart' as http;
 import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/home/screens/home_screen.dart';
+import 'package:job_finder/models/user.model.dart';
+import 'package:job_finder/providers/user.provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  // Sign in a user
-  void signInUser(
-      {required BuildContext context,
-      required String email,
-      required String password}) async {
-    http.Response response = await http.post(
-      Uri.parse('$uri/login/token'),
-      body: {'username': email, 'password': password},
-      headers: {
-        "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-    );
-
-    switch (response.statusCode) {
-      case 200:
-        Navigator.pushNamed(context, HomeScreen.routeName);
-        break;
-
-      case 401:
-        final parsed = jsonDecode(response.body);
-        print("hello 401");
-        showDialog(
-            context: context,
-            builder: (BuildContext builder) {
-              return AlertDialog(
-                title: Text("Error"),
-                content: Text(parsed['detail']),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('OK'))
-                ],
-              );
-            });
-        break;
-
-      default:
-        final parsed = jsonDecode(response.body);
-        showDialog(
-            context: context,
-            builder: (BuildContext builder) {
-              return AlertDialog(
-                title: Text("Error"),
-                content: (parsed['detail'] == null || parsed['detail'] == "")
-                    ? Text("Not found")
-                    : Text(parsed['detail']),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('OK'))
-                ],
-              );
-            });
-        break;
-    }
-  }
-
   // get user data
   void getUserData(BuildContext context) async {
     try {
@@ -82,12 +24,32 @@ class AuthService {
         prefs.setString("x-auth-token", "");
       }
 
-      var tokenRes = await http.post(
-        Uri.parse("$uri/login/$token"),
-        headers: <String, String>{
-          'accept': 'application/json'
-        }
-      );
+      http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
+          headers: <String, String>{'accept': 'application/json'});
+
+      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      switch (tokenRes.statusCode) {
+        case 200:
+          final decoded = json.decode(tokenRes.body);
+          print("STATUS CODE");
+          print(tokenRes.statusCode);
+          // print(jsonDecode(tokenRes.body));
+          userProvider.setUser(decoded);
+          break;
+
+        case 401:
+          print("ERROR 401");
+          print(tokenRes.body);
+          break;
+
+        default:
+          print("ERROR Unknown Error");
+          print(tokenRes.body);
+          break;
+      }
+
+      // var userProvider = Provider.of<UserProvider>(context, listen: false);
+      // userProvider.setUser(res.body);
     } catch (e) {
       dialog(context, "Error", e.toString(), () => Navigator.pop(context),
           'Got it');

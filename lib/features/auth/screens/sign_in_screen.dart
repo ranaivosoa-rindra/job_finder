@@ -35,6 +35,13 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final _signInFormKey = GlobalKey<FormState>();
 
+  @override
+  void dispose(){
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   void signInUser(
       {required BuildContext context,
       required String email,

@@ -80,13 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: FloatingActionButton(
                     backgroundColor: GlobalVariables.primaryColor,
                     onPressed: () {
-                      // Navigator.pushNamedAndRemoveUntil(
-                      //   context, 
-                      //   SignInScreen.routeName, 
-                      //   (route) => false
-                      // );
-                    Navigator.pushNamed(context, SignInScreen.routeName);
-
+                      Navigator.pushNamed(context, SignInScreen.routeName);
                     },
                     child: Image.asset("assets/icons/forward_icon.png"),
                   ),

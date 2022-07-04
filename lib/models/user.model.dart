@@ -5,11 +5,13 @@ class User {
   final String username;
   final String email;
   final String password;
-  
+  final String token;
+
   User({
     required this.username,
     required this.email,
     required this.password,
+    required this.token
   });
 
   Map<String, dynamic> toMap() {
@@ -25,10 +27,12 @@ class User {
       username: map['username'] ?? "",
       email: map['email'] ?? "",
       password: map['password'] ?? "",
+      token: map['token'] ?? "",
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory User.fromJson(String source) => User.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory User.fromJson(String source) =>
+      User.fromMap(json.decode(source) as Map<String, dynamic>);
 }

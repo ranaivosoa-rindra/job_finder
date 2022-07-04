@@ -3,24 +3,36 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
 import 'package:job_finder/providers/user.provider.dart';
 import 'package:job_finder/router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider())
-      ], 
-      child: const MyApp()));
+  runApp(MaterialApp(
+    home: MultiProvider(
+        providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
+        child: const MyApp()),
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AuthService authService = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    authService.getUserData(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,13 +51,12 @@ class MyApp extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                  "Jobspot", 
-                  style: TextStyle(
+                "Jobspot",
+                style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 22
-                )
-              ,),
+                    fontSize: 22),
+              ),
             ),
           ],
         ),
