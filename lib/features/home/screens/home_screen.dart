@@ -5,7 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/common/widgets/global_bottom_bar.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/home/widgets/bloc_title.dart';
 import 'package:job_finder/features/home/widgets/card.dart';
+import 'package:job_finder/features/home/widgets/summary_card.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -129,136 +131,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 27,
                 ),
 
-                /// Find your job bloc
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Find Your Job",
-                    style: GoogleFonts.dmSans(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+                BlocTitle(title: "Find Your Job"),
 
                 SizedBox(
-                  height: 30,
+                  height: 25,
                 ),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: MediaQuery.of(context).size.width / 2.1,
-                      // width: 150,
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFAFECFE),
-                        border: Border.all(
-                          width: 1,
-                          color: Color(0xFFAFECFE),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset("assets/images/search_img.png"),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "44.5k",
-                            style: GoogleFonts.dmSans(
-                                color: Color(0xFF0D0140),
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            "Remote Job",
-                            style: GoogleFonts.dmSans(
-                                color: Color(0xFF0D0140),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      ),
+                    SummaryCard(
+                      annualSalary: "44.5", 
+                      jobType: "Remote Job", 
+                      backgroundCardColor: Color(0xFFAFECFE), 
+                      cardType: "big"
                     ),
+
                     Column(
                       children: [
-                        Container(
-                          height: MediaQuery.of(context).size.width / 4.7,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFBEAFFE),
-                            border: Border.all(
-                              width: 1,
-                              color: Color(0xFFBEAFFE),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "66.8k",
-                                style: GoogleFonts.dmSans(
-                                    color: Color(0xFF0D0140),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Text(
-                                "Full Time",
-                                style: GoogleFonts.dmSans(
-                                    color: Color(0xFF0D0140),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
+                        SummaryCard(
+                          annualSalary: "66.5", 
+                          jobType: "Full Time", 
+                          backgroundCardColor: Color(0xFFBEAFFE), 
+                          cardType: "small",
                         ),
+                        
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          height: MediaQuery.of(context).size.width / 4.7,
-                          width: MediaQuery.of(context).size.width / 2.5,
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFD6AD),
-                            border: Border.all(
-                              width: 1,
-                              color: Color(0xFFFFD6AD),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "38.9k",
-                                style: GoogleFonts.dmSans(
-                                    color: Color(0xFF0D0140),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              Text(
-                                "Part Time",
-                                style: GoogleFonts.dmSans(
-                                    color: Color(0xFF0D0140),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
+
+                        SummaryCard(
+                          annualSalary: "38.9", 
+                          jobType: "Part Time", 
+                          backgroundCardColor: Color(0xFFFFD6AD), 
+                          cardType: "small",
                         ),
                       ],
                     ),
@@ -269,17 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                 ),
 
-                /// Recent Job List
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Recent Job List",
-                    style: GoogleFonts.dmSans(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
+                BlocTitle(title: 'Recent Job List',),
 
                 SizedBox(
                   height: 20,
@@ -287,7 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 JobCard(
                   isImage: false, 
-                  jobLocation: 'Google inc . California, USA', 
+                  jobCompany: 'Google inc',
+                  jobLocation: 'California, USA', 
                   jobTitle: 'Product designer', 
                   jobType: 'Full Time', 
                   personType: 'Senior designer', 

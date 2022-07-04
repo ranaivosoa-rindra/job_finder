@@ -10,6 +10,7 @@ class JobCard extends StatefulWidget {
   final Image? logoImage;
   final bool isImage;
   final String jobTitle;
+  final String jobCompany;
   final String jobLocation;
   final String salary;
   final String personType;
@@ -22,8 +23,9 @@ class JobCard extends StatefulWidget {
       required this.jobLocation,
       required this.salary,
       required this.personType,
-      required this.jobType, 
-      required this.isImage})
+      required this.jobType,
+      required this.isImage, 
+      required this.jobCompany})
       : super(key: key);
 
   @override
@@ -57,15 +59,14 @@ class _JobCardState extends State<JobCard> {
                       border: Border.all(color: Color(0xFFD6CDFE), width: 1),
                       borderRadius: BorderRadius.circular(100),
                     ),
-                    child:
-                    (widget.isImage == false)
-                    ? Center(
-                      child: Icon(
-                        Icons.apple,
-                        size: 30,
-                      ),
-                    )
-                    : widget.logoImage,
+                    child: (widget.isImage == false)
+                        ? Center(
+                            child: Icon(
+                              Icons.apple,
+                              size: 30,
+                            ),
+                          )
+                        : widget.logoImage,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 12.0),
@@ -80,7 +81,7 @@ class _JobCardState extends State<JobCard> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          widget.jobLocation,
+                         "${widget.jobCompany} . ${widget.jobLocation}",
                           style: GoogleFonts.dmSans(
                             color: Color(0xFF524B6B).withOpacity(0.8),
                             fontSize: 14,
@@ -92,9 +93,8 @@ class _JobCardState extends State<JobCard> {
                 ],
               ),
               InkWell(
-                child: Image.asset("assets/icons/Save_black.png"),
-                onTap: (){}  
-              )
+                  child: Image.asset("assets/icons/Save_black.png"),
+                  onTap: () {})
             ],
           ),
           Row(
@@ -119,9 +119,7 @@ class _JobCardState extends State<JobCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               JobButton(jobSpecificity: widget.personType),
-
               JobButton(jobSpecificity: widget.jobType),
-
               ApplyButton(),
             ],
           ),
