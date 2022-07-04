@@ -7,7 +7,9 @@ import 'package:job_finder/common/widgets/global_bottom_bar.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/home/widgets/bloc_title.dart';
 import 'package:job_finder/features/home/widgets/card.dart';
-import 'package:job_finder/features/home/widgets/summary_card.dart';
+import 'package:job_finder/features/home/widgets/card_header.dart';
+import 'package:job_finder/features/home/widgets/summary_cards_list.dart';
+import 'package:job_finder/features/home/widgets/top_header.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "/home";
@@ -30,151 +32,34 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 /// header
-                // hello text
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Hello",
-                            style: GoogleFonts.dmSans(
-                                fontSize: 22,
-                                color: GlobalVariables.primaryColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Gérald Rindra.",
-                            style: GoogleFonts.dmSans(
-                                fontSize: 22,
-                                color: GlobalVariables.primaryColor,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-
-                    // circle avatar
-                    CircleAvatar(
-                      backgroundImage:
-                          AssetImage("assets/images/rindra-photo.png"),
-                    )
-                  ],
+                TopHeader(
+                  username: "G. Rindra", 
+                  circleAvatarImage: "assets/images/rindra-photo.png"
                 ),
-
-                Stack(
-                  children: [
-                    // Text + button
-                    Container(
-                      margin: EdgeInsets.only(top: 28),
-                      width: double.infinity,
-                      padding: EdgeInsets.only(left: 17),
-                      height: 143,
-                      decoration: BoxDecoration(
-                        color: GlobalVariables.primaryColor,
-                        border: Border.all(
-                            width: 1, color: GlobalVariables.primaryColor),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "50 % off",
-                                style: GoogleFonts.dmSans(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "take any courses",
-                                style: GoogleFonts.dmSans(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xFFFF9228))),
-                            child: Text(
-                              "Join Now",
-                              style: GoogleFonts.dmSans(
-                                  color: Colors.white, fontSize: 18),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Container(
-                      padding: EdgeInsets.only(right: 16),
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: Image.asset(
-                          "assets/images/office-girl-image.png",
-                        ),
-                      ),
-                    ),
-                  ],
+                CardHeader(
+                  percentRemise: "50", 
+                  onPress: (){}, 
+                  imageAsset: "assets/images/office-girl-image.png"
                 ),
 
                 SizedBox(
                   height: 27,
                 ),
 
+                /// Find your Job bloc
                 BlocTitle(title: "Find Your Job"),
 
                 SizedBox(
                   height: 25,
                 ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SummaryCard(
-                      annualSalary: "44.5", 
-                      jobType: "Remote Job", 
-                      backgroundCardColor: Color(0xFFAFECFE), 
-                      cardType: "big"
-                    ),
-
-                    Column(
-                      children: [
-                        SummaryCard(
-                          annualSalary: "66.5", 
-                          jobType: "Full Time", 
-                          backgroundCardColor: Color(0xFFBEAFFE), 
-                          cardType: "small",
-                        ),
-                        
-                        SizedBox(
-                          height: 20,
-                        ),
-
-                        SummaryCard(
-                          annualSalary: "38.9", 
-                          jobType: "Part Time", 
-                          backgroundCardColor: Color(0xFFFFD6AD), 
-                          cardType: "small",
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                SummaryCardsList(),
 
                 SizedBox(
                   height: 20,
                 ),
 
+                /// Recent Job bloc
                 BlocTitle(title: 'Recent Job List',),
 
                 SizedBox(
