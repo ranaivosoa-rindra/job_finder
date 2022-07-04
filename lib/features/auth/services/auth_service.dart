@@ -4,10 +4,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/home/screens/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthService{
+class AuthService {
   // Sign in a user
   void signInUser(
       {required BuildContext context,
@@ -66,6 +68,29 @@ class AuthService{
               );
             });
         break;
+    }
+  }
+
+  // get user data
+  void getUserData(BuildContext context) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("x-auth-token");
+
+      // set the x-auth-token to "" to get the new token for the new signed in user
+      if (token == null) {
+        prefs.setString("x-auth-token", "");
+      }
+
+      var tokenRes = await http.post(
+        Uri.parse("$uri/login/$token"),
+        headers: <String, String>{
+          'accept': 'application/json'
+        }
+      );
+    } catch (e) {
+      dialog(context, "Error", e.toString(), () => Navigator.pop(context),
+          'Got it');
     }
   }
 }

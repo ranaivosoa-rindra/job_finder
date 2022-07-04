@@ -8,12 +8,13 @@ import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
-import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:job_finder/features/home/screens/home_screen.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:job_finder/providers/user.provider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   static const String routeName = "/signin";
@@ -53,6 +54,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
       switch (response.statusCode) {
         case 200:
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          Provider.of<UserProvider>(context, listen: false)
+              .setUser(response.body);
+          await prefs.setString('x-auth-token', jsonDecode(response.body)['access_token']);
           Navigator.pushNamed(context, HomeScreen.routeName);
           break;
 
@@ -65,13 +70,12 @@ class _SignInScreenState extends State<SignInScreen> {
         default:
           final parsed = jsonDecode(response.body);
           dialog(
-            context, 
-            "Error ${response.statusCode}", 
-            (parsed['detail'] == null || parsed['detail'] == "") 
-            ? "Not Found"
-            : parsed['detail']
-            ,
-              () => Navigator.pop(context), 
+              context,
+              "Error ${response.statusCode}",
+              (parsed['detail'] == null || parsed['detail'] == "")
+                  ? "Not Found"
+                  : parsed['detail'],
+              () => Navigator.pop(context),
               'OK');
           break;
       }
