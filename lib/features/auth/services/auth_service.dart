@@ -49,7 +49,6 @@ class AuthService {
           print(user.toJson());
           Provider.of<UserProvider>(context, listen: false)
               .setUser(user.toJson());
-          Navigator.of(context).pushNamed(HomeScreen.routeName);
           break;
 
         case 401:
