@@ -87,7 +87,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     } catch (e) {
       dialog(
-          context, "Error", e.toString(), () => Navigator.pop(context), 'OK');
+        context, 
+        "Error", 
+        e.toString(), 
+        () => Navigator.pop(context), 
+        'OK'
+      );
     }
 
     setState(() {

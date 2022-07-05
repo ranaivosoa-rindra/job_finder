@@ -36,7 +36,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _signInFormKey = GlobalKey<FormState>();
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -64,7 +64,10 @@ class _SignInScreenState extends State<SignInScreen> {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           Provider.of<UserProvider>(context, listen: false)
               .setUser(response.body);
-          await prefs.setString('x-auth-token', jsonDecode(response.body)['access_token']);
+          await prefs.setString(
+              'x-auth-token', jsonDecode(response.body)['access_token']);
+          print(await prefs.setString(
+              'x-auth-token', jsonDecode(response.body)['access_token']));
           Navigator.pushNamed(context, HomeScreen.routeName);
           break;
 

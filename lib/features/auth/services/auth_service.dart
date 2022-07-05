@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/constants/global_variables.dart';
-import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:job_finder/models/user.model.dart';
 import 'package:job_finder/providers/user.provider.dart';
 import 'package:provider/provider.dart';
@@ -24,22 +23,29 @@ class AuthService {
         prefs.setString("x-auth-token", "");
       }
 
+      print(prefs.getString("x-auth-token"));
       http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
           headers: <String, String>{'accept': 'application/json'});
 
-      var userProvider = Provider.of<UserProvider>(context, listen: false);
+      User user = User(
+          email: json.decode(tokenRes.body)['email'],
+          password: "",
+          token: "",
+          username: json.decode(tokenRes.body)['username']);
       switch (tokenRes.statusCode) {
         case 200:
-          final decoded = json.decode(tokenRes.body);
           print("STATUS CODE");
           print(tokenRes.statusCode);
-          // print(jsonDecode(tokenRes.body));
-          userProvider.setUser(decoded);
+          print(user.toJson());
+          Provider.of<UserProvider>(context, listen: false)
+              .setUser(user.toJson());
+          // print(json.decode(tokenRes.body)['email']);
+          // userProvider.setUser(user);
           break;
 
         case 401:
           print("ERROR 401");
-          print(tokenRes.body);
+          print('$uri/login/$token');
           break;
 
         default:

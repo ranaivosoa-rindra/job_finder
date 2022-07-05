@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/home/widgets/bloc_title.dart';
 import 'package:job_finder/features/home/widgets/card.dart';
 import 'package:job_finder/features/home/widgets/card_header.dart';
@@ -20,6 +21,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context, listen: false).user;
+    AuthService authService = AuthService();
 
     return SingleChildScrollView(
       child: SafeArea(
@@ -29,13 +31,17 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             children: [
               /// header
               TopHeader(
-                  username: "G. Rindra",
+                  username: user.username,
                   circleAvatarImage: "assets/images/rindra-photo.png"),
 
-              Center(child: Text(user.toJson()),),
+              Center(
+                child: Text(user.toJson()),
+              ),
               CardHeader(
                   percentRemise: "50",
-                  onPress: () {},
+                  onPress: () {
+                    authService.getUserData(context);
+                  },
                   imageAsset: "assets/images/office-girl-image.png"),
 
               SizedBox(
