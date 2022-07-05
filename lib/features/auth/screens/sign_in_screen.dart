@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, dead_code, use_build_context_synchronously, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, dead_code, use_build_context_synchronously, avoid_print, no_leading_underscores_for_local_identifiers
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -40,6 +40,12 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserEmailPassword();
   }
 
   void signInUser(
@@ -97,6 +103,42 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  void handleRememberMe(bool? value) async {
+    print("Remember me");
+
+    print("the value");
+    print(value);
+    isChecked = value!;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("remember_me", value);
+    prefs.setString("email", _emailController.text);
+    prefs.setString("password", _passwordController.text);
+
+    setState(() {
+      isChecked = value;
+    });
+  }
+
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+      var _email = _prefs.getString("email") ?? "";
+      var _password = _prefs.getString("password") ?? "";
+      var _rememberMe = _prefs.getBool("remember_me") ?? false;
+
+      if (_rememberMe) {
+        setState(() {
+          isChecked = true;
+        });
+        _emailController.text = _email;
+        _passwordController.text = _password;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -189,11 +231,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                                 GlobalVariables.secondaryColor,
                                             activeColor: Color(0xFFE6E1FF),
                                             value: isChecked,
-                                            onChanged: (bool? val) {
-                                              setState(() {
-                                                isChecked = val!;
-                                              });
-                                            }),
+                                            onChanged: handleRememberMe),
                                       ),
                                       Text(
                                         "Remember me",
