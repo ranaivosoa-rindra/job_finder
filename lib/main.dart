@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+   // authService.getUserData(context);
   }
 
   @override
@@ -51,9 +52,10 @@ class _MyAppState extends State<MyApp> {
               child: Text(
                 "Jobspot",
                 style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22
+                ),
               ),
             ),
           ],

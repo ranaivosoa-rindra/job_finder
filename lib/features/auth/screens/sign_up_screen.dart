@@ -5,10 +5,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/loading.dart';
 import 'package:job_finder/common/utils/dialog.dart';
+import 'package:job_finder/common/utils/error_handler.dart';
+import 'package:job_finder/common/utils/snackbar.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
+import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:http/http.dart' as http;
@@ -34,7 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isLoading = false;
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -49,50 +52,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       isLoading = true;
     });
-
-    User user = User(
-      email: email,
-      password: password,
-      username: username,
-      token: ""
-    );
+    User user =
+        User(email: email, password: password, username: username, token: "");
 
     try {
-      http.Response response = await http.post(
-        Uri.parse('$uri/users/'),
-        body: user.toJson(),
-        headers: {
-          "Content-Type": 'application/json; charset=UTF-8',
-        },
+      AuthService auth = AuthService();
+      http.Response response = await auth.signUpResponse(user);
+
+      errorHandler(
+        response: response, 
+        context: context, 
+        onSuccess: ()async{
+          snackBarHandler(
+            context: context,
+            content: "User created sucessfully",
+            label: "OK");
+        }
       );
-
-      switch (response.statusCode) {
-        case 200:
-          dialog(context, "Success", "User created sucessfully",
-              () => Navigator.pushNamed(context, SignInScreen.routeName), "OK");
-          break;
-
-        default:
-          final parsed = jsonDecode(response.body);
-          dialog(
-            context, 
-            "Error ${response.statusCode}", 
-            (parsed['detail'] == null || parsed['detail'] == "") 
-            ? "Not Found"
-            : parsed['detail']
-            ,
-              () => Navigator.pop(context), 
-              'OK');
-          break;
-      }
     } catch (e) {
-      dialog(
-        context, 
-        "Error", 
-        e.toString(), 
-        () => Navigator.pop(context), 
-        'OK'
-      );
+      snackBarHandler(context: context, content: e.toString(), label: 'Got it');
     }
 
     setState(() {
@@ -164,11 +142,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                                 subtitle: CustomFormField(
-                                    withSuffixIcon: false,
-                                    hintText: "ranaivosoarindra3@gmail.com",
-                                    controller: _emailController,
-                                    hint: 'email',
-                                  ),
+                                  withSuffixIcon: false,
+                                  hintText: "ranaivosoarindra3@gmail.com",
+                                  controller: _emailController,
+                                  hint: 'email',
+                                ),
                               ),
                               SizedBox(height: 15),
                               ListTile(

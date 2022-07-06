@@ -4,10 +4,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/loading.dart';
 import 'package:job_finder/common/utils/dialog.dart';
+import 'package:job_finder/common/utils/error_handler.dart';
+import 'package:job_finder/common/utils/snackbar.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
+import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:job_finder/features/home/screens/home_screen.dart';
@@ -55,18 +58,15 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {
       isLoading = true;
     });
-
     try {
-      http.Response response = await http.post(
-        Uri.parse('$uri/login/token'),
-        body: {'username': email, 'password': password},
-        headers: {
-          "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8',
-        },
-      );
+      AuthService auth = AuthService();
+      http.Response response =
+          await auth.signInResponse(email: email, password: password);
 
-      switch (response.statusCode) {
-        case 200:
+      errorHandler(
+        response: response, 
+        context: context, 
+        onSuccess: () async {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           Provider.of<UserProvider>(context, listen: false)
               .setUser(response.body);
@@ -75,29 +75,10 @@ class _SignInScreenState extends State<SignInScreen> {
           print(await prefs.setString(
               'x-auth-token', jsonDecode(response.body)['access_token']));
           Navigator.pushNamed(context, HomeScreen.routeName);
-          break;
-
-        case 401:
-          final parsed = jsonDecode(response.body);
-          dialog(context, "Error ${response.statusCode}", parsed['detail'],
-              () => Navigator.pop(context), 'OK');
-          break;
-
-        default:
-          final parsed = jsonDecode(response.body);
-          dialog(
-              context,
-              "Error ${response.statusCode}",
-              (parsed['detail'] == null || parsed['detail'] == "")
-                  ? "Not Found"
-                  : parsed['detail'],
-              () => Navigator.pop(context),
-              'OK');
-          break;
-      }
+        }
+      );
     } catch (e) {
-      dialog(
-          context, "Error", e.toString(), () => Navigator.pop(context), 'OK');
+      snackBarHandler(context: context, content: e.toString(), label: "Got it");
     }
 
     setState(() {
