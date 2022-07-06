@@ -10,7 +10,7 @@ void snackBarHandler(
     action: SnackBarAction(
       label: label,
       onPressed: (content == "User created sucessfully")
-      ? () => Navigator.pushNamed(context, SignInScreen.routeName)
+      ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()))
       : (){},
     ),
   ));

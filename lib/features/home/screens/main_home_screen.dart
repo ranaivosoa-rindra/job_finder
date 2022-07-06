@@ -18,7 +18,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class MainHomeScreen extends StatefulWidget {
-  static const String routeName = "/";
   const MainHomeScreen({Key? key}) : super(key: key);
 
   @override

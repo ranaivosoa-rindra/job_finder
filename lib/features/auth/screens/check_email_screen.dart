@@ -47,7 +47,12 @@ class CheckEmail extends StatelessWidget {
                 // buttons
                 GlobalButton(
                     onTap: () {
-                      Navigator.pushNamed(context, SucceffullyResetPasswordScreen.routeName);
+                      // Navigator.pushNamed(context, SucceffullyResetPasswordScreen.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SucceffullyResetPasswordScreen()));
                     },
                     text: "Open Your Email",
                     backgroundColor: GlobalVariables.primaryColor,
@@ -58,7 +63,11 @@ class CheckEmail extends StatelessWidget {
 
                 GlobalButton(
                     onTap: () {
-                      Navigator.pushNamed(context, SignInScreen.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SignInScreen()));
                     },
                     text: "back to login",
                     backgroundColor: GlobalVariables.tertiaryColor,

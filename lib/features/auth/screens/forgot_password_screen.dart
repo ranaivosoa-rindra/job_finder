@@ -78,7 +78,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   // buttons
                   GlobalButton(
                       onTap: () {
-                        Navigator.pushNamed(context, CheckEmail.routeName);
+                        // Navigator.pushNamed(context, CheckEmail.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CheckEmail()));
                       },
                       text: "reset password",
                       backgroundColor: GlobalVariables.primaryColor,
@@ -91,7 +96,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                   GlobalButton(
                       onTap: () {
-                        Navigator.pushNamed(context, SignInScreen.routeName);
+                        // Navigator.pushNamed(context, SignInScreen.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SignInScreen()));
                       },
                       text: "back to login",
                       backgroundColor: GlobalVariables.tertiaryColor,

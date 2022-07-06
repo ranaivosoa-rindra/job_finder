@@ -3,6 +3,11 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/screens/check_email_screen.dart';
+import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
+import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
+import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
+import 'package:job_finder/features/auth/screens/successfully_reset_password_screen.dart';
 import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
 import 'package:job_finder/providers/user.provider.dart';

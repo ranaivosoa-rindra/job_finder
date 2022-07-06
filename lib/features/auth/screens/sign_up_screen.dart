@@ -220,8 +220,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(context,
-                                          ForgotPasswordScreen.routeName);
+                                      // Navigator.pushNamed(context,
+                                      //     ForgotPasswordScreen.routeName);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgotPasswordScreen()));
                                     },
                                     child: Text(
                                       "Forgot Password ?",
@@ -292,8 +297,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, SignInScreen.routeName);
+                                      // Navigator.pushNamed(
+                                      //     context, SignInScreen.routeName);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SignInScreen()));
                                     },
                                     child: Text(
                                       "Sign in",

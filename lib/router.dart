@@ -18,12 +18,6 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => SplashScreen(),
         );
 
-      case MainHomeScreen.routeName:
-      return MaterialPageRoute(
-          settings: routeSettings, 
-          builder: (_) => MainHomeScreen(),
-      );
-
     case SignInScreen.routeName:
       return PageRouteBuilder(
         settings: routeSettings,
@@ -92,7 +86,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     },
   );
 
-      case HomeScreen.routeName:
+    case HomeScreen.routeName:
       return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {

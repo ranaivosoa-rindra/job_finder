@@ -12,10 +12,9 @@ class LogoutPage extends StatelessWidget {
         actions: [
           GestureDetector(
               onTap: () {
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SignInScreen()),
-                    (route) => false);
+                    MaterialPageRoute(builder: (context) => SignInScreen()));
               },
               child: Icon(Icons.logout))
         ],

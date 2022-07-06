@@ -13,10 +13,11 @@ import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
-import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:job_finder/features/home/screens/main_home_screen.dart';
 import 'package:job_finder/providers/user.provider.dart';
+import 'package:job_finder/router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -65,25 +66,25 @@ class _SignInScreenState extends State<SignInScreen> {
           await auth.signInResponse(email: email, password: password);
 
       errorHandler(
-        response: response, 
-        context: context, 
-        onSuccess: () async {
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          Provider.of<UserProvider>(context, listen: false)
-              .setUser(response.body);
-          await prefs.setString(
-              'x-auth-token', jsonDecode(response.body)['access_token']);
-          print(await prefs.setString(
-              'x-auth-token', jsonDecode(response.body)['access_token']));
-          Navigator.pushNamed(context, MainHomeScreen.routeName);
-        }
-      );
+          response: response,
+          context: context,
+          onSuccess: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            Provider.of<UserProvider>(context, listen: false)
+                .setUser(response.body);
+            await prefs.setString(
+                'x-auth-token', jsonDecode(response.body)['access_token']);
+            print(await prefs.setString(
+                'x-auth-token', jsonDecode(response.body)['access_token']));
+            // Navigator.pushNamed(context, HomeScreen.routeName);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        HomeScreen()));
+          });
     } catch (e) {
-      snackBarHandler(
-        context: context, 
-        content: e.toString(), 
-        label: "Got it"
-      );
+      snackBarHandler(context: context, content: e.toString(), label: "Got it");
     }
 
     setState(() {
@@ -129,6 +130,13 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      onGenerateRoute: ((settings) => generateRoute(settings)),
+      home: signInWidget(),
+    );
+  }
+
+  Widget signInWidget() {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus
           ?.unfocus(), // set focus out when the user click anywhere else
@@ -231,8 +239,13 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(context,
-                                          ForgotPasswordScreen.routeName);
+                                      // Navigator.pushNamed(context,
+                                      //     ForgotPasswordScreen.routeName);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgotPasswordScreen()));
                                     },
                                     child: Text(
                                       "Forgot Password ?",
@@ -267,10 +280,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                         if (_signInFormKey.currentState!
                                             .validate()) {
                                           signInUser(
-                                            context: context,
-                                            email: _emailController.text,
-                                            password:
-                                                _passwordController.text);
+                                              context: context,
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text);
                                         }
                                       },
                                       text: "login",
@@ -308,8 +321,13 @@ class _SignInScreenState extends State<SignInScreen> {
                                   InkWell(
                                     onTap: () {
                                       // Navigator.pushNamed(context, SignUpScreen.routeName);
-                                      Navigator.pushNamed(
-                                          context, SignUpScreen.routeName);
+                                      // Navigator.pushNamed(
+                                      //     context, SignUpScreen.routeName);
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SignUpScreen()));
                                     },
                                     child: Text(
                                       "Sign up",

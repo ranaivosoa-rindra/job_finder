@@ -80,7 +80,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: FloatingActionButton(
                     backgroundColor: GlobalVariables.primaryColor,
                     onPressed: () {
-                      Navigator.pushNamed(context, SignInScreen.routeName);
+                      // Navigator.pushNamed(context, SignInScreen.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SignInScreen()));
                     },
                     child: Image.asset("assets/icons/forward_icon.png"),
                   ),
