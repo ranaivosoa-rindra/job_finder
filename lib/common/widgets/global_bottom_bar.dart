@@ -70,45 +70,6 @@ class _GlobalBottomBarState extends State<GlobalBottomBar> {
               colorActive: Color(0xFFFCA34D),
               colorInactive: Color(0xFFA49EB5),
             ),
-
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(
-            //     Ionicons.home_outline,
-            //     size: 25,
-            //     color: GlobalVariables.primaryColor,
-            //   ),
-            // ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(
-            //     FontAwesomeIcons.battleNet,
-            //     color: Color(0xFFA49EB5),
-            //     size: 25,
-            //   ),
-            // ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(
-            //     Ionicons.add_circle,
-            //     color: GlobalVariables.primaryColor,
-            //     size: 35,
-            //   ),
-            // ),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(
-            //     Ionicons.chatbox_outline,
-            //     color: Color(0xFFA49EB5),
-            //   ),
-            //),
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: Icon(
-            //     Ionicons.bookmark_outline,
-            //     color: Color(0xFFA49EB5),
-            //   ),
-            // ),
           ],
         ),
       ),

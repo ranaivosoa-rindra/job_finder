@@ -4,9 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/fullscreen_loading.dart';
-import 'package:job_finder/common/shared/loading.dart';
+import 'package:job_finder/common/utils/snackbar.dart';
 import 'package:job_finder/constants/global_variables.dart';
-import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/home/widgets/bloc_title.dart';
 import 'package:job_finder/features/home/widgets/card.dart';
 import 'package:job_finder/features/home/widgets/card_header.dart';
@@ -19,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class MainHomeScreen extends StatefulWidget {
+  static const String routeName = "/";
   const MainHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -26,78 +26,81 @@ class MainHomeScreen extends StatefulWidget {
 }
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
-  AuthService authService = AuthService();
-  User _user = User(email: "", password: "", token: "", username: "");
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     getUserData(context);
-    delaying();
-    // authService.getUserData(context);
+    //delaying();
+    WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
   }
 
   @override
   void didChangeDependencies() {
-    // authService.getUserData(context);
     getUserData(context);
     super.didChangeDependencies();
   }
 
+  @override
+  void dispose() {
+    getUserData(context);
+    super.dispose();
+  }
+
   // get user data
   void getUserData(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString("x-auth-token");
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("x-auth-token");
 
-    // set the x-auth-token to "" to get the new token for the new signed in user
-    if (token == null) {
-      prefs.setString("x-auth-token", "");
-    }
-
-    print(prefs.getString("x-auth-token"));
-    http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
-        headers: <String, String>{'accept': 'application/json'});
-
-    print("BODY");
-    print(tokenRes.body);
-
-    var response = json.decode(tokenRes.body);
-    if (response["detail"] == "Invalid token") {
-      print("ERRORRRRRR");
-      return;
-    }
-
-    if (response["email"] != null) {
-      User user = User(
-          email: json.decode(tokenRes.body)['email'],
-          password: "",
-          token: "",
-          username: json.decode(tokenRes.body)['username']);
-      switch (tokenRes.statusCode) {
-        case 200:
-          print("STATUS CODE");
-          print(tokenRes.statusCode);
-          print(user.toJson());
-          Provider.of<UserProvider>(context, listen: false)
-              .setUser(user.toJson());
-          setState(() {
-            _user = user;
-          });
-          print("new user");
-          print(_user);
-          break;
-
-        case 401:
-          print("ERROR 401");
-          print('$uri/login/$token');
-          break;
-
-        default:
-          print("ERROR Unknown Error");
-          print(tokenRes.body);
-          break;
+      // set the x-auth-token to "" to get the new token for the new signed in user
+      if (token == null) {
+        prefs.setString("x-auth-token", "");
       }
+
+      print(prefs.getString("x-auth-token"));
+      http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
+          headers: <String, String>{'accept': 'application/json'});
+      print("BODY");
+      print(tokenRes.body);
+
+      var response = json.decode(tokenRes.body);
+      if (response["detail"] == "Invalid token") {
+        print("ERRORRRRRR");
+        return;
+      }
+
+      if (response["email"] != null) {
+        User user = User(
+            email: json.decode(tokenRes.body)['email'],
+            password: "",
+            token: "",
+            username: json.decode(tokenRes.body)['username']);
+        switch (tokenRes.statusCode) {
+          case 200:
+            print("STATUS CODE");
+            print(tokenRes.statusCode);
+            print(user.toJson());
+            Provider.of<UserProvider>(context, listen: false)
+                .setUser(user.toJson());
+            break;
+
+          case 401:
+            print('$uri/login/$token');
+            snackBarHandler(
+                context: context, content: "ERROR 401", label: "Got it");
+            break;
+
+          default:
+            // snackBarHandler(
+            //     context: context, content: tokenRes.body, label: "Got it");
+            print("error");
+            break;
+        }
+      }
+    } catch (e) {
+      snackBarHandler(context: context, content: e.toString(), label: "Got it");
     }
   }
 
@@ -106,16 +109,16 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       _isLoading = true;
     });
     await Future.delayed(Duration(seconds: 5));
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return (_isLoading)
-    ? FullScreenLoading()
-    : homeBody();
+    return (_isLoading) ? FullScreenLoading() : homeBody();
   }
 
   Widget homeBody() {
@@ -133,9 +136,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
               CardHeader(
                   percentRemise: "50",
-                  onPress: () {
-                    // getUserData(context);
-                  },
+                  onPress: () {},
                   imageAsset: "assets/images/office-girl-image.png"),
 
               SizedBox(

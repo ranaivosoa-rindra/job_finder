@@ -7,6 +7,7 @@ import 'package:job_finder/features/auth/screens/sign_in_screen.dart';
 import 'package:job_finder/features/auth/screens/sign_up_screen.dart';
 import 'package:job_finder/features/auth/screens/successfully_reset_password_screen.dart';
 import 'package:job_finder/features/home/screens/home_screen.dart';
+import 'package:job_finder/features/home/screens/main_home_screen.dart';
 import 'package:job_finder/features/splash/splashScreen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -16,6 +17,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           settings: routeSettings, 
           builder: (_) => SplashScreen(),
         );
+
+      case MainHomeScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, 
+          builder: (_) => MainHomeScreen(),
+      );
 
     case SignInScreen.routeName:
       return PageRouteBuilder(

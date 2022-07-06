@@ -15,6 +15,7 @@ import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:job_finder/features/home/screens/main_home_screen.dart';
 import 'package:job_finder/providers/user.provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,7 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
               'x-auth-token', jsonDecode(response.body)['access_token']);
           print(await prefs.setString(
               'x-auth-token', jsonDecode(response.body)['access_token']));
-          Navigator.pushNamed(context, HomeScreen.routeName);
+          Navigator.pushNamed(context, MainHomeScreen.routeName);
         }
       );
     } catch (e) {
