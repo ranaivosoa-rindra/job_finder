@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/loading.dart';
-import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/common/utils/error_handler.dart';
 import 'package:job_finder/common/utils/snackbar.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
@@ -15,7 +14,11 @@ import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:http/http.dart' as http;
+import 'package:job_finder/features/home/screens/home_screen.dart';
 import 'package:job_finder/models/user.model.dart';
+import 'package:job_finder/providers/user.provider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String routeName = "/signup";
@@ -57,24 +60,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     try {
       AuthService auth = AuthService();
-      http.Response response = await auth.signUpResponse(user);
 
+      http.Response response = await auth.signUpResponse(user);
       errorHandler(
-        response: response, 
-        context: context, 
-        onSuccess: ()async{
-          snackBarHandler(
-            context: context,
-            content: "User created sucessfully",
-            label: "OK");
-        }
-      );
+          response: response,
+          context: context,
+          onSuccess: () async {
+            snackBarHandler(
+                context: context,
+                content: "User created sucessfully",
+                label: "OK");
+          });
     } catch (e) {
       snackBarHandler(context: context, content: e.toString(), label: 'Got it');
     }
 
     setState(() {
       isLoading = false;
+    });
+  }
+
+  void handleRememberMe(bool? value) async {
+    print("Remember me");
+    print('the value');
+    print(value);
+
+    isChecked = value!;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool("remember_me", value);
+    prefs.setString("email", _emailController.text);
+    prefs.setString("password", _passwordController.text);
+
+    setState(() {
+      isChecked = value;
     });
   }
 
@@ -188,11 +206,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 GlobalVariables.secondaryColor,
                                             activeColor: Color(0xFFE6E1FF),
                                             value: isChecked,
-                                            onChanged: (bool? val) {
-                                              setState(() {
-                                                isChecked = val!;
-                                              });
-                                            }),
+                                            onChanged: handleRememberMe),
                                       ),
                                       Text(
                                         "Remember me",

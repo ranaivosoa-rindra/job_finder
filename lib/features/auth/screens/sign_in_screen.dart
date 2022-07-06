@@ -78,7 +78,11 @@ class _SignInScreenState extends State<SignInScreen> {
         }
       );
     } catch (e) {
-      snackBarHandler(context: context, content: e.toString(), label: "Got it");
+      snackBarHandler(
+        context: context, 
+        content: e.toString(), 
+        label: "Got it"
+      );
     }
 
     setState(() {
@@ -250,7 +254,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           Column(
                             children: [
                               /// Buttons
-                              // login button*
+                              // login button
                               SizedBox(
                                 height: 10,
                               ),
@@ -259,18 +263,13 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ? Loading()
                                   : GlobalButton(
                                       onTap: () {
-                                        // if (_signInFormKey.currentState!
-                                        //     .validate()) {
-                                        //   signInUser();
-                                        //   // SignInScreen.isLoading = false;
-                                        // }
                                         if (_signInFormKey.currentState!
                                             .validate()) {
                                           signInUser(
-                                              context: context,
-                                              email: _emailController.text,
-                                              password:
-                                                  _passwordController.text);
+                                            context: context,
+                                            email: _emailController.text,
+                                            password:
+                                                _passwordController.text);
                                         }
                                       },
                                       text: "login",
