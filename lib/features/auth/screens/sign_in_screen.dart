@@ -3,9 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/loading.dart';
-import 'package:job_finder/common/utils/dialog.dart';
 import 'package:job_finder/common/utils/error_handler.dart';
-import 'package:job_finder/common/utils/snackbar.dart';
 import 'package:job_finder/common/widgets/global_button.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/auth/screens/forgot_password_screen.dart';
@@ -15,7 +13,6 @@ import 'package:job_finder/features/auth/widgets/custom_form_field.dart';
 import 'package:job_finder/features/auth/widgets/header.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_finder/features/home/screens/home_screen.dart';
-import 'package:job_finder/features/home/screens/main_home_screen.dart';
 import 'package:job_finder/providers/user.provider.dart';
 import 'package:job_finder/router.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +28,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  // final AuthService authService = AuthService();
   bool isChecked = false;
   bool isLoading = false;
 
@@ -64,7 +60,6 @@ class _SignInScreenState extends State<SignInScreen> {
       AuthService auth = AuthService();
       http.Response response =
           await auth.signInResponse(email: email, password: password);
-
       errorHandler(
           response: response,
           context: context,
@@ -81,14 +76,38 @@ class _SignInScreenState extends State<SignInScreen> {
             print("------value of the token------");
             print(prefs.getString("x-auth-token"));
             if (prefs.getString("x-auth-token") != null) {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomeScreen())); 
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()));
             } else {
-              snackBarHandler(context: context, content: "Expired token", label: "Go");
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(response.statusCode.toString()),
+                  content: Text("Token expired"),
+                  actions: [
+                    TextButton(
+                      onPressed: () =>  Navigator.pop(context),
+                      child: Text('Go back'),
+                    ),
+                  ],
+                )
+              );
             }
           });
     } catch (e) {
-      snackBarHandler(context: context, content: e.toString(), label: "Got it");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+          content: Text("Token expired"),
+          actions: [
+            TextButton(
+              onPressed: () =>  Navigator.pop(context),
+              child: Text('Got it'),
+            ),
+          ],
+        )
+      );
     }
 
     setState(() {

@@ -1,7 +1,8 @@
+// ignore_for_file: avoid_print, prefer_const_constructors
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:job_finder/common/utils/snackbar.dart';
 
 void errorHandler({
   required http.Response response,
@@ -14,18 +15,39 @@ void errorHandler({
       break;
 
     case 401:
+      print('-----------------HELLO 401------------');
       final parsed = jsonDecode(response.body);
-      snackBarHandler(context: context, content: parsed['detail'], label: 'OK');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(response.statusCode.toString()),
+          content: Text(parsed['detail']),
+          actions: [
+            TextButton(
+              onPressed: () =>  Navigator.pop(context),
+              child: Text('Go back'),
+            ),
+          ],
+        )
+      );
       break;
 
     default:
       final parsed = jsonDecode(response.body);
-      snackBarHandler(
+      showDialog(
         context: context,
-        content: (parsed['detail'] == null || parsed['detail'] == "")
-            ? "Not Found"
-            : parsed['detail'],
-        label: 'OK',
+        builder: (context) => AlertDialog(
+          title: Text(response.statusCode.toString()),
+          content: (parsed['detail'] == null || parsed['detail'] == "")
+            ? Text("Not Found")
+            : Text(parsed['detail']),
+          actions: [
+            TextButton(
+              onPressed: () =>  Navigator.pop(context),
+              child: Text('Got it'),
+            ),
+          ],
+        )
       );
       break;
   }

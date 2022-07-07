@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/fullscreen_loading.dart';
-import 'package:job_finder/common/utils/snackbar.dart';
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/features/home/widgets/bloc_title.dart';
 import 'package:job_finder/features/home/widgets/card.dart';
@@ -31,8 +30,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     super.initState();
-    getUserData(context);
     if (GlobalVariables.loadingOnce == false) {
+      getUserData(context);
       WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
       GlobalVariables.loadingOnce = true;
     }
@@ -72,25 +71,50 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           password: "",
           token: "",
           username: json.decode(tokenRes.body)['username']);
+      final UserProvider usr = Provider.of<UserProvider>(context, listen: false);
       switch (tokenRes.statusCode) {
         case 200:
           print("STATUS CODE");
           print(tokenRes.statusCode);
           print(user.toJson());
-          final UserProvider usr = Provider.of<UserProvider>(context, listen: false);
           usr.setUser(user.toJson());
           break;
 
         case 401:
           print('$uri/login/$token');
-          snackBarHandler(
-              context: context, content: "ERROR 401", label: "Got it");
+          final parsed = jsonDecode(response.body);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(response.statusCode.toString()),
+              content: Text(parsed['detail']),
+              actions: [
+                TextButton(
+                  onPressed: () =>  Navigator.pop(context),
+                  child: Text('Go back'),
+                ),
+              ],
+            )
+          );
           break;
 
         default:
-          // snackBarHandler(
-          //     context: context, content: tokenRes.body, label: "Got it");
-          print("error");
+          final parsed = jsonDecode(response.body);
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(response.statusCode.toString()),
+              content: (parsed['detail'] == null || parsed['detail'] == "")
+                ? Text("Not Found")
+                : Text(parsed['detail']),
+              actions: [
+                TextButton(
+                  onPressed: () =>  Navigator.pop(context),
+                  child: Text('Got it'),
+                ),
+              ],
+            )
+          );
           break;
       }
     }
