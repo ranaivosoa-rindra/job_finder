@@ -74,13 +74,18 @@ class _SignInScreenState extends State<SignInScreen> {
                 .setUser(response.body);
             await prefs.setString(
                 'x-auth-token', jsonDecode(response.body)['access_token']);
+
+            print("------existence of the token------");
             print(await prefs.setString(
                 'x-auth-token', jsonDecode(response.body)['access_token']));
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        HomeScreen()));
+            print("------value of the token------");
+            print(prefs.getString("x-auth-token"));
+            if (prefs.getString("x-auth-token") != null) {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomeScreen())); 
+            } else {
+              snackBarHandler(context: context, content: "Expired token", label: "Go");
+            }
           });
     } catch (e) {
       snackBarHandler(context: context, content: e.toString(), label: "Got it");
@@ -240,11 +245,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                     onTap: () {
                                       // Navigator.pushNamed(context,
                                       //     ForgotPasswordScreen.routeName);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ForgotPasswordScreen()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ForgotPasswordScreen()));
                                     },
                                     child: Text(
                                       "Forgot Password ?",
@@ -322,11 +327,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                       // Navigator.pushNamed(context, SignUpScreen.routeName);
                                       // Navigator.pushNamed(
                                       //     context, SignUpScreen.routeName);
-                                    Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SignUpScreen()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SignUpScreen()));
                                     },
                                     child: Text(
                                       "Sign up",

@@ -31,8 +31,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
     super.initState();
+    getUserData(context);
     if (GlobalVariables.loadingOnce == false) {
-      getUserData(context);
       WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
       GlobalVariables.loadingOnce = true;
     }
@@ -54,7 +54,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       prefs.setString("x-auth-token", "");
     }
 
-    print(prefs.getString("x-auth-token"));
+    //print(prefs.getString("x-auth-token"));
     http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
         headers: <String, String>{'accept': 'application/json'});
     print("BODY");

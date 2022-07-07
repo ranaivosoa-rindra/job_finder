@@ -45,6 +45,11 @@ class SucceffullyResetPasswordScreen extends StatelessWidget {
                     GlobalButton(
                         onTap: () {
                           // Navigator.pushNamed(context, HomeScreen.routeName);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      HomeScreen()));
                         },
                         text: "continue",
                         backgroundColor: GlobalVariables.primaryColor,
@@ -54,6 +59,11 @@ class SucceffullyResetPasswordScreen extends StatelessWidget {
                     GlobalButton(
                         onTap: () {
                           // Navigator.pushNamed(context, SignInScreen.routeName);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SignInScreen()));
                         },
                         text: "back to login",
                         backgroundColor: GlobalVariables.tertiaryColor,
