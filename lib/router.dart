@@ -18,6 +18,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           builder: (_) => SplashScreen(),
         );
 
+    // fix the problem : "Could not find a generator for route RouteSettings(“/home, null)" 
+    // case MainHomeScreen.routeName:
+    // return MaterialPageRoute(
+    //     settings: routeSettings, 
+    //     builder: (_) => MainHomeScreen(),
+    // );
+
     case SignInScreen.routeName:
       return PageRouteBuilder(
         settings: routeSettings,
@@ -53,7 +60,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
 
     case CheckEmail.routeName:
-      return PageRouteBuilder(
+    return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => CheckEmail(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
@@ -86,7 +93,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     },
   );
 
-    case HomeScreen.routeName:
+      case HomeScreen.routeName:
       return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {

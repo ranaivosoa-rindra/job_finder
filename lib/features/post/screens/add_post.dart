@@ -13,10 +13,8 @@ class AddPost extends StatefulWidget {
 class _AddPostState extends State<AddPost> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('add screen'),
-      ),
+    return Center(
+      child: Text('add screen'),
     );
   }
 }

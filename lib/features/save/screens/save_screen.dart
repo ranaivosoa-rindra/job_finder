@@ -14,10 +14,8 @@ class SaveScreen extends StatefulWidget {
 class _SaveScreenState extends State<SaveScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Center(
         child: Text('SaveScreen'),
-      ),
-    );
+      );
   }
 }

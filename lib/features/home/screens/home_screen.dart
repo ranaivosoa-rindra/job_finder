@@ -17,7 +17,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int index = 0;
+  int currentIndex = 0;
   final pages = <Widget>[
     MainHomeScreen(),
     ConnectionScreen(),
@@ -31,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Color(0xFFF5F5F6),
         bottomNavigationBar: GlobalBottomBar(index: index, onChangedTab: onChangeTab,),
         body: pages[index],

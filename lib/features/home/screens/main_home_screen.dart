@@ -26,80 +26,73 @@ class MainHomeScreen extends StatefulWidget {
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
   bool _isLoading = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    getUserData(context);
-    //delaying();
-    WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
+    if (GlobalVariables.loadingOnce == false) {
+      getUserData(context);
+      WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
+      GlobalVariables.loadingOnce = true;
+    }
   }
 
-  @override
-  void didChangeDependencies() {
-    getUserData(context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    getUserData(context);
-    super.dispose();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getUserData(context);
+  //   super.didChangeDependencies();
+  // }
 
   // get user data
   void getUserData(BuildContext context) async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString("x-auth-token");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("x-auth-token");
 
-      // set the x-auth-token to "" to get the new token for the new signed in user
-      if (token == null) {
-        prefs.setString("x-auth-token", "");
+    // set the x-auth-token to "" to get the new token for the new signed in user
+    if (token == null) {
+      prefs.setString("x-auth-token", "");
+    }
+
+    print(prefs.getString("x-auth-token"));
+    http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
+        headers: <String, String>{'accept': 'application/json'});
+    print("BODY");
+    print(tokenRes.body);
+
+    var response = json.decode(tokenRes.body);
+    if (response["detail"] == "Invalid token") {
+      print("ERRORRRRRR");
+      return;
+    }
+
+    if (response["email"] != null) {
+      User user = User(
+          email: json.decode(tokenRes.body)['email'],
+          password: "",
+          token: "",
+          username: json.decode(tokenRes.body)['username']);
+      switch (tokenRes.statusCode) {
+        case 200:
+          print("STATUS CODE");
+          print(tokenRes.statusCode);
+          print(user.toJson());
+          final UserProvider usr = Provider.of<UserProvider>(context, listen: false);
+          usr.setUser(user.toJson());
+          break;
+
+        case 401:
+          print('$uri/login/$token');
+          snackBarHandler(
+              context: context, content: "ERROR 401", label: "Got it");
+          break;
+
+        default:
+          // snackBarHandler(
+          //     context: context, content: tokenRes.body, label: "Got it");
+          print("error");
+          break;
       }
-
-      print(prefs.getString("x-auth-token"));
-      http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
-          headers: <String, String>{'accept': 'application/json'});
-      print("BODY");
-      print(tokenRes.body);
-
-      var response = json.decode(tokenRes.body);
-      if (response["detail"] == "Invalid token") {
-        print("ERRORRRRRR");
-        return;
-      }
-
-      if (response["email"] != null) {
-        User user = User(
-            email: json.decode(tokenRes.body)['email'],
-            password: "",
-            token: "",
-            username: json.decode(tokenRes.body)['username']);
-        switch (tokenRes.statusCode) {
-          case 200:
-            print("STATUS CODE");
-            print(tokenRes.statusCode);
-            print(user.toJson());
-            Provider.of<UserProvider>(context, listen: false)
-                .setUser(user.toJson());
-            break;
-
-          case 401:
-            print('$uri/login/$token');
-            snackBarHandler(
-                context: context, content: "ERROR 401", label: "Got it");
-            break;
-
-          default:
-            // snackBarHandler(
-            //     context: context, content: tokenRes.body, label: "Got it");
-            print("error");
-            break;
-        }
-      }
-    } catch (e) {
-      snackBarHandler(context: context, content: e.toString(), label: "Got it");
     }
   }
 
@@ -107,7 +100,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     setState(() {
       _isLoading = true;
     });
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 3));
     if (mounted) {
       setState(() {
         _isLoading = false;
@@ -122,59 +115,62 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   Widget homeBody() {
     final user = Provider.of<UserProvider>(context, listen: false).user;
-    return SingleChildScrollView(
-      child: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Column(
-            children: [
-              /// header
-              TopHeader(
-                  username: user.username,
-                  circleAvatarImage: "assets/images/rindra-photo.png"),
-
-              CardHeader(
-                  percentRemise: "50",
-                  onPress: () {},
-                  imageAsset: "assets/images/office-girl-image.png"),
-
-              SizedBox(
-                height: 27,
-              ),
-
-              /// Find your Job bloc
-              BlocTitle(title: "Find Your Job"),
-
-              SizedBox(
-                height: 25,
-              ),
-
-              SummaryCardsList(),
-
-              SizedBox(
-                height: 20,
-              ),
-
-              /// Recent Job bloc
-              BlocTitle(
-                title: 'Recent Job List',
-              ),
-
-              SizedBox(
-                height: 20,
-              ),
-
-              JobCard(
-                isImage: false,
-                jobCompany: 'Google inc',
-                jobLocation: 'California, USA',
-                jobTitle: 'Product designer',
-                jobType: 'Full Time',
-                personType: 'Senior designer',
-                salary: '15',
-                icon: Icon(Icons.apple),
-              ),
-            ],
+    return Scaffold(
+      key: _scaffoldKey,
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              children: [
+                /// header
+                TopHeader(
+                    username: user.username,
+                    circleAvatarImage: "assets/images/rindra-photo.png"),
+    
+                CardHeader(
+                    percentRemise: "50",
+                    onPress: () {},
+                    imageAsset: "assets/images/office-girl-image.png"),
+    
+                SizedBox(
+                  height: 27,
+                ),
+    
+                /// Find your Job bloc
+                BlocTitle(title: "Find Your Job"),
+    
+                SizedBox(
+                  height: 25,
+                ),
+    
+                SummaryCardsList(),
+    
+                SizedBox(
+                  height: 20,
+                ),
+    
+                /// Recent Job bloc
+                BlocTitle(
+                  title: 'Recent Job List',
+                ),
+    
+                SizedBox(
+                  height: 20,
+                ),
+    
+                JobCard(
+                  isImage: false,
+                  jobCompany: 'Google inc',
+                  jobLocation: 'California, USA',
+                  jobTitle: 'Product designer',
+                  jobType: 'Full Time',
+                  personType: 'Senior designer',
+                  salary: '15',
+                  icon: Icon(Icons.apple),
+                ),
+              ],
+            ),
           ),
         ),
       ),

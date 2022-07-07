@@ -14,10 +14,8 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('MessageScreen'),
-      ),
+    return Center(
+      child: Text('MessageScreen'),
     );
   }
 }

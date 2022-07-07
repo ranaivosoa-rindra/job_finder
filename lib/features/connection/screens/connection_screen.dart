@@ -14,10 +14,8 @@ class ConnectionScreen extends StatefulWidget {
 class _ConnectionScreenState extends State<ConnectionScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('ConnectionScreen'),
-      ),
+    return Center(
+      child: Text('ConnectionScreen'),
     );
   }
 }

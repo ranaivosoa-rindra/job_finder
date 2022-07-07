@@ -76,7 +76,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 'x-auth-token', jsonDecode(response.body)['access_token']);
             print(await prefs.setString(
                 'x-auth-token', jsonDecode(response.body)['access_token']));
-            // Navigator.pushNamed(context, HomeScreen.routeName);
             Navigator.push(
                 context,
                 MaterialPageRoute(

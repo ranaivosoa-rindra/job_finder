@@ -8,4 +8,5 @@ class GlobalVariables {
   static const secondaryColor = Color(0xFFFCA34D);
   static const tertiaryColor = Color(0xFFD6CDFE);
   static const textIndigoColor = Color(0xFF524B6B);
+  static bool loadingOnce = false;
 }
