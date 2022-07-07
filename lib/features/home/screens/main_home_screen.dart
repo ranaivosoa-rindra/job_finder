@@ -48,6 +48,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("x-auth-token");
 
+    print('-----HELLO token-----');
+    print(token);
     // set the x-auth-token to "" to get the new token for the new signed in user
     if (token == null) {
       prefs.setString("x-auth-token", "");
@@ -71,7 +73,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           password: "",
           token: "",
           username: json.decode(tokenRes.body)['username']);
-      final UserProvider usr = Provider.of<UserProvider>(context, listen: false);
+      final UserProvider usr =
+          Provider.of<UserProvider>(context, listen: false);
       switch (tokenRes.statusCode) {
         case 200:
           print("STATUS CODE");
@@ -84,37 +87,36 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           print('$uri/login/$token');
           final parsed = jsonDecode(response.body);
           showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(response.statusCode.toString()),
-              content: Text(parsed['detail']),
-              actions: [
-                TextButton(
-                  onPressed: () =>  Navigator.pop(context),
-                  child: Text('Go back'),
-                ),
-              ],
-            )
-          );
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(response.statusCode.toString()),
+                    content: Text(parsed['detail']),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Go back'),
+                      ),
+                    ],
+                  ));
           break;
 
         default:
           final parsed = jsonDecode(response.body);
           showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(response.statusCode.toString()),
-              content: (parsed['detail'] == null || parsed['detail'] == "")
-                ? Text("Not Found")
-                : Text(parsed['detail']),
-              actions: [
-                TextButton(
-                  onPressed: () =>  Navigator.pop(context),
-                  child: Text('Got it'),
-                ),
-              ],
-            )
-          );
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(response.statusCode.toString()),
+                    content:
+                        (parsed['detail'] == null || parsed['detail'] == "")
+                            ? Text("Not Found")
+                            : Text(parsed['detail']),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Got it'),
+                      ),
+                    ],
+                  ));
           break;
       }
     }
@@ -151,38 +153,38 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                 TopHeader(
                     username: user.username,
                     circleAvatarImage: "assets/images/rindra-photo.png"),
-    
+
                 CardHeader(
                     percentRemise: "50",
                     onPress: () {},
                     imageAsset: "assets/images/office-girl-image.png"),
-    
+
                 SizedBox(
                   height: 27,
                 ),
-    
+
                 /// Find your Job bloc
                 BlocTitle(title: "Find Your Job"),
-    
+
                 SizedBox(
                   height: 25,
                 ),
-    
+
                 SummaryCardsList(),
-    
+
                 SizedBox(
                   height: 20,
                 ),
-    
+
                 /// Recent Job bloc
                 BlocTitle(
                   title: 'Recent Job List',
                 ),
-    
+
                 SizedBox(
                   height: 20,
                 ),
-    
+
                 JobCard(
                   isImage: false,
                   jobCompany: 'Google inc',

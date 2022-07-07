@@ -1,10 +1,8 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously, prefer_const_constructors
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:job_finder/constants/global_variables.dart';
 import 'package:job_finder/models/user.model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   Future<http.Response> signInResponse(
@@ -26,13 +24,5 @@ class AuthService {
         "Content-Type": 'application/json; charset=UTF-8',
       },
     );
-  }
-
-  void getUserToken(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString("x-auth-token");
-
-    print("-----------------------Getting user token-------------------------");
-    print(token);
   }
 }
