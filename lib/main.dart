@@ -106,7 +106,8 @@ class _MyAppState extends State<MyApp> {
             ),
           ],
         ),
-        nextScreen: (lastUserExist) ? HomeScreen() : SplashScreen(),
+        // nextScreen: (lastUserExist) ? HomeScreen() : SplashScreen(),
+        nextScreen: SplashScreen(),
         splashTransition: SplashTransition.fadeTransition,
       ),
     );

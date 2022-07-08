@@ -44,7 +44,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   // }
 
   // get user data
-  void getUserData(BuildContext context) async {
+  Future getUserData(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("x-auth-token");
 
@@ -81,7 +81,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           print(tokenRes.statusCode);
           print(user.toJson());
           usr.setUser(user.toJson());
-          break;
+          return user;
+        //break;
 
         case 401:
           print('$uri/login/$token');
@@ -98,7 +99,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       ),
                     ],
                   ));
-          break;
+          return parsed;
+        //break;
 
         default:
           final parsed = jsonDecode(response.body);
@@ -117,7 +119,8 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       ),
                     ],
                   ));
-          break;
+          return parsed;
+        //break;
       }
     }
   }
@@ -126,7 +129,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     setState(() {
       _isLoading = true;
     });
-    await Future.delayed(Duration(seconds: 3));
+    Future.delayed(Duration(seconds: 5));
     if (mounted) {
       setState(() {
         _isLoading = false;
@@ -134,9 +137,107 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     }
   }
 
+  Future<User> dl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("x-auth-token");
+
+    print('-----HELLO token-----');
+    print(token);
+    // set the x-auth-token to "" to get the new token for the new signed in user
+    if (token == null) {
+      prefs.setString("x-auth-token", "");
+    }
+    var tokenRes = await http.post(Uri.parse("$uri/login/$token"),
+        headers: <String, String>{'accept': 'application/json'});
+    print("BODY");
+    print(tokenRes.body);
+
+    var response = json.decode(tokenRes.body);
+    if (response["detail"] == "Invalid token") {
+      print("ERRORRRRRR");
+      return User(username: "", email: "", password: "", token: "");
+    }
+
+    if (response["email"] != null) {
+      User user = User(
+          email: json.decode(tokenRes.body)['email'],
+          password: "",
+          token: "",
+          username: json.decode(tokenRes.body)['username']);
+      final UserProvider usr =
+          Provider.of<UserProvider>(context, listen: false);
+      switch (tokenRes.statusCode) {
+        case 200:
+          print("STATUS CODE");
+          print(tokenRes.statusCode);
+          print(user.toJson());
+          usr.setUser(user.toJson());
+          return user;
+        //break;
+
+        case 401:
+          print('$uri/login/$token');
+          final parsed = jsonDecode(response.body);
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(response.statusCode.toString()),
+                    content: Text(parsed['detail']),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Go back'),
+                      ),
+                    ],
+                  ));
+          return User(username: "", email: "", password: "", token: "");
+        //break;
+
+        default:
+          final parsed = jsonDecode(response.body);
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text(response.statusCode.toString()),
+                    content:
+                        (parsed['detail'] == null || parsed['detail'] == "")
+                            ? Text("Not Found")
+                            : Text(parsed['detail']),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Got it'),
+                      ),
+                    ],
+                  ));
+          return User(username: "", email: "", password: "", token: "");
+        //break;
+      }
+    }
+    return User(username: "", email: "", password: "", token: "");
+    // return tokenRes;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return (_isLoading) ? FullScreenLoading() : homeBody();
+    // return (_isLoading) ? FullScreenLoading() : homeBody();
+    return FutureBuilder(
+        future: dl(),
+        builder: (context, AsyncSnapshot<User> snapshot) {
+          if (_isLoading) {
+            return homeBody();
+          } else {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: FullScreenLoading());
+            } else {
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                return homeBody();
+              }
+            }
+          }
+        });
   }
 
   Widget homeBody() {
