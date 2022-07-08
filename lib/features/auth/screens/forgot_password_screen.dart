@@ -34,8 +34,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   // header
                   Header(
                     headerText:
-                        "To reset your password, you need your email or mobile number that can be authenticated?",
-                    headerTitle: "Forgot Password?",
+                        "Type your email here to confirm your account",
+                    headerTitle: "Confirm your Account",
                   ),
 
                   SizedBox(
@@ -85,7 +85,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               builder: (context) =>
                                   CheckEmail()));
                       },
-                      text: "reset password",
+                      text: "Confirm email",
                       backgroundColor: GlobalVariables.primaryColor,
                       textColor: Colors.white,
                       withIcon: false),

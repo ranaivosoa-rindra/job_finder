@@ -41,7 +41,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             blurRadius: 10,
             spreadRadius: 10,
             offset: Offset(0, 10),
-          )
+          ),
         ],
       ),
       child: TextFormField(
@@ -77,7 +77,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
           }
           return null;
         },
-        keyboardType: TextInputType.emailAddress,
+        keyboardType: (widget.hintText == "Entry code")
+        ? TextInputType.number
+        : TextInputType.emailAddress,
       ),
     );
   }

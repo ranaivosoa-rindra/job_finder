@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isLoading = false;
     });
   }
-
+  
   void handleRememberMe(bool? value) async {
     print("Remember me");
     print('the value');

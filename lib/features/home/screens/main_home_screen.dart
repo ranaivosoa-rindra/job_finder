@@ -27,15 +27,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   bool _isLoading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  @override
-  void initState() {
-    super.initState();
-    if (GlobalVariables.loadingOnce == false) {
-      getUserData(context);
-      WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
-      GlobalVariables.loadingOnce = true;
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (GlobalVariables.loadingOnce == false) {
+  //     getUserData(context);
+  //     WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
+  //     GlobalVariables.loadingOnce = true;
+  //   }
+  // }
 
   // @override
   // void didChangeDependencies() {
@@ -220,24 +220,24 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return (_isLoading) ? FullScreenLoading() : homeBody();
     return FutureBuilder(
-        future: dl(),
-        builder: (context, AsyncSnapshot<User> snapshot) {
-          if (_isLoading) {
-            return homeBody();
+      future: dl(),
+      builder: (context, AsyncSnapshot<User> snapshot) {
+        print(snapshot.hasData);
+        if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: FullScreenLoading());
           } else {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: FullScreenLoading());
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
             } else {
-              if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                return homeBody();
-              }
+              return homeBody();
             }
           }
-        });
+        } else {
+          return homeBody();
+        }
+      });
   }
 
   Widget homeBody() {
