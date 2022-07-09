@@ -4,13 +4,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/fullscreen_loading.dart';
+import 'package:job_finder/common/utils/error_handler.dart';
 import 'package:job_finder/constants/global_variables.dart';
+import 'package:job_finder/features/auth/services/auth_service.dart';
 import 'package:job_finder/features/home/widgets/bloc_title.dart';
 import 'package:job_finder/features/home/widgets/card.dart';
 import 'package:job_finder/features/home/widgets/card_header.dart';
 import 'package:job_finder/features/home/widgets/summary_cards_list.dart';
 import 'package:job_finder/features/home/widgets/top_header.dart';
+import 'package:job_finder/models/job.model.dart';
 import 'package:job_finder/models/user.model.dart';
+import 'package:job_finder/providers/job.provider.dart';
 import 'package:job_finder/providers/user.provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,26 +29,28 @@ class MainHomeScreen extends StatefulWidget {
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  AuthService auth = AuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    getJob();
+  }
 
   Future<User> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("x-auth-token");
     User nullUser = User(username: "", email: "", password: "", token: "");
 
-    print('-----HELLO token-----');
-    print(token);
     // set the x-auth-token to "" to get the new token for the new signed in user
     if (token == null) {
       prefs.setString("x-auth-token", "");
     }
-    var tokenRes = await http.post(Uri.parse("$uri/login/$token"),
-        headers: <String, String>{'accept': 'application/json'});
-    print("BODY");
-    print(tokenRes.body);
+
+    var tokenRes = await auth.loginTokenResponse(token!);
 
     var response = json.decode(tokenRes.body);
     if (response["detail"] == "Invalid token") {
-      print("ERRORRRRRR");
       return nullUser;
     }
 
@@ -58,8 +64,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           Provider.of<UserProvider>(context, listen: false);
       switch (tokenRes.statusCode) {
         case 200:
-          print("STATUS CODE");
-          print(tokenRes.statusCode);
           print(user.toJson());
           usr.setUser(user.toJson());
           return user;
@@ -104,6 +108,26 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
       }
     }
     return nullUser;
+  }
+
+  void getJob() async {
+    Job job = Job(
+        title: "",
+        company: "",
+        companyUrl: "",
+        location: "",
+        description: "",
+        datePosted: "");
+    print("----HELLLO GET JOB----");
+    http.Response jobRes = await auth.getJobsResponse();
+    print("----JOB----");
+    print(jobRes.body);
+    print(jobRes.body.runtimeType);
+
+    print("----------DECODED------------");
+    var b = jobRes.body;
+    var decoded = json.decode(b);
+    print(decoded[1]);
   }
 
   @override

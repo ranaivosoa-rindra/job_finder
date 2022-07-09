@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Job {
   final String title;
@@ -41,5 +43,6 @@ class Job {
 
   String toJson() => json.encode(toMap());
 
-  factory Job.fromJson(String source) => Job.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Job.fromJson(String source) =>
+      Job.fromMap(json.decode(source) as Map<String, dynamic>);
 }

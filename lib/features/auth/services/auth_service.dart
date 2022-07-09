@@ -25,4 +25,14 @@ class AuthService {
       },
     );
   }
+
+  Future<http.Response> loginTokenResponse(String token) {
+    return http.post(Uri.parse("$uri/login/$token"),
+        headers: <String, String>{'accept': 'application/json'});
+  }
+
+  Future<http.Response> getJobsResponse() {
+    return http.get(Uri.parse("$uri/jobs/all"),
+        headers: <String, String>{'accept': 'application/json'});
+  }
 }
