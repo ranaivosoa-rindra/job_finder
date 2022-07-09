@@ -88,18 +88,18 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text(response.statusCode.toString()),
-                content:
-                    (parsed['detail'] == null || parsed['detail'] == "")
-                        ? Text("Not Found")
-                        : Text(parsed['detail']),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text('Got it'),
-                  ),
-                ],
-              ));
+                    title: Text(response.statusCode.toString()),
+                    content:
+                        (parsed['detail'] == null || parsed['detail'] == "")
+                            ? Text("Not Found")
+                            : Text(parsed['detail']),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Got it'),
+                      ),
+                    ],
+                  ));
           return nullUser;
       }
     }
@@ -109,18 +109,23 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getUserData(),
-      builder: (context, AsyncSnapshot<User> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: FullScreenLoading());
-        } else {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+        future: getUserData(),
+        builder: (context, AsyncSnapshot<User> snapshot) {
+          if (!GlobalVariables.loadingOnce) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: FullScreenLoading());
+            } else {
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                GlobalVariables.loadingOnce = true;
+                return homeBody();
+              }
+            }
           } else {
             return homeBody();
           }
-        }
-      });
+        });
   }
 
   Widget homeBody() {
