@@ -24,122 +24,12 @@ class MainHomeScreen extends StatefulWidget {
 }
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
-  bool _isLoading = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (GlobalVariables.loadingOnce == false) {
-  //     getUserData(context);
-  //     WidgetsBinding.instance.addPostFrameCallback((_) => delaying());
-  //     GlobalVariables.loadingOnce = true;
-  //   }
-  // }
-
-  // @override
-  // void didChangeDependencies() {
-  //   getUserData(context);
-  //   super.didChangeDependencies();
-  // }
-
-  // get user data
-  Future getUserData(BuildContext context) async {
+  Future<User> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("x-auth-token");
-
-    print('-----HELLO token-----');
-    print(token);
-    // set the x-auth-token to "" to get the new token for the new signed in user
-    if (token == null) {
-      prefs.setString("x-auth-token", "");
-    }
-
-    //print(prefs.getString("x-auth-token"));
-    http.Response tokenRes = await http.post(Uri.parse("$uri/login/$token"),
-        headers: <String, String>{'accept': 'application/json'});
-    print("BODY");
-    print(tokenRes.body);
-
-    var response = json.decode(tokenRes.body);
-    if (response["detail"] == "Invalid token") {
-      print("ERRORRRRRR");
-      return;
-    }
-
-    if (response["email"] != null) {
-      User user = User(
-          email: json.decode(tokenRes.body)['email'],
-          password: "",
-          token: "",
-          username: json.decode(tokenRes.body)['username']);
-      final UserProvider usr =
-          Provider.of<UserProvider>(context, listen: false);
-      switch (tokenRes.statusCode) {
-        case 200:
-          print("STATUS CODE");
-          print(tokenRes.statusCode);
-          print(user.toJson());
-          usr.setUser(user.toJson());
-          return user;
-        //break;
-
-        case 401:
-          print('$uri/login/$token');
-          final parsed = jsonDecode(response.body);
-          showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: Text(response.statusCode.toString()),
-                    content: Text(parsed['detail']),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('Go back'),
-                      ),
-                    ],
-                  ));
-          return parsed;
-        //break;
-
-        default:
-          final parsed = jsonDecode(response.body);
-          showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: Text(response.statusCode.toString()),
-                    content:
-                        (parsed['detail'] == null || parsed['detail'] == "")
-                            ? Text("Not Found")
-                            : Text(parsed['detail']),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('Got it'),
-                      ),
-                    ],
-                  ));
-          return parsed;
-        //break;
-      }
-    }
-  }
-
-  Future delaying() async {
-    setState(() {
-      _isLoading = true;
-    });
-    Future.delayed(Duration(seconds: 5));
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<User> dl() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString("x-auth-token");
+    User nullUser = User(username: "", email: "", password: "", token: "");
 
     print('-----HELLO token-----');
     print(token);
@@ -155,7 +45,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     var response = json.decode(tokenRes.body);
     if (response["detail"] == "Invalid token") {
       print("ERRORRRRRR");
-      return User(username: "", email: "", password: "", token: "");
+      return nullUser;
     }
 
     if (response["email"] != null) {
@@ -190,7 +80,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                       ),
                     ],
                   ));
-          return User(username: "", email: "", password: "", token: "");
+          return nullUser;
         //break;
 
         default:
@@ -198,30 +88,28 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                    title: Text(response.statusCode.toString()),
-                    content:
-                        (parsed['detail'] == null || parsed['detail'] == "")
-                            ? Text("Not Found")
-                            : Text(parsed['detail']),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('Got it'),
-                      ),
-                    ],
-                  ));
-          return User(username: "", email: "", password: "", token: "");
-        //break;
+                title: Text(response.statusCode.toString()),
+                content:
+                    (parsed['detail'] == null || parsed['detail'] == "")
+                        ? Text("Not Found")
+                        : Text(parsed['detail']),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Got it'),
+                  ),
+                ],
+              ));
+          return nullUser;
       }
     }
-    return User(username: "", email: "", password: "", token: "");
-    // return tokenRes;
+    return nullUser;
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: dl(),
+      future: getUserData(),
       builder: (context, AsyncSnapshot<User> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: FullScreenLoading());
