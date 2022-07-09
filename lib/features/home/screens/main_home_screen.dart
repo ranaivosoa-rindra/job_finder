@@ -223,19 +223,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return FutureBuilder(
       future: dl(),
       builder: (context, AsyncSnapshot<User> snapshot) {
-        print(snapshot.hasData);
-        if (snapshot.hasData) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: FullScreenLoading());
-          } else {
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else {
-              return homeBody();
-            }
-          }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: FullScreenLoading());
         } else {
-          return homeBody();
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return homeBody();
+          }
         }
       });
   }
