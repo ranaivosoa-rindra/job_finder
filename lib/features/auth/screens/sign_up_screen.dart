@@ -52,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isLoading = true;
     });
     User user =
-        User(email: email, password: password, username: username, token: "");
+        User(email: email, password: password, fullName: username, token: "");
 
     try {
       AuthService auth = AuthService();

@@ -64,15 +64,16 @@ class _SignInScreenState extends State<SignInScreen> {
           response: response,
           context: context,
           onSuccess: () async {
+            var decoded = jsonDecode(response.body)[0];
+            print(decoded);
             SharedPreferences prefs = await SharedPreferences.getInstance();
             Provider.of<UserProvider>(context, listen: false)
-                .setUser(response.body);
-            await prefs.setString(
-                'x-auth-token', jsonDecode(response.body)['access_token']);
+                .setUser(jsonEncode(decoded));
+            await prefs.setString('x-auth-token', decoded['access_token']);
 
             print("------existence of the token------");
-            print(await prefs.setString(
-                'x-auth-token', jsonDecode(response.body)['access_token']));
+            print(
+                await prefs.setString('x-auth-token', decoded['access_token']));
             print("------value of the token------");
             print(prefs.getString("x-auth-token"));
             if (prefs.getString("x-auth-token") != null) {
@@ -80,34 +81,32 @@ class _SignInScreenState extends State<SignInScreen> {
                   MaterialPageRoute(builder: (context) => HomeScreen()));
             } else {
               showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(response.statusCode.toString()),
-                  content: Text("Token expired"),
-                  actions: [
-                    TextButton(
-                      onPressed: () =>  Navigator.pop(context),
-                      child: Text('Go back'),
-                    ),
-                  ],
-                )
-              );
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        title: Text(response.statusCode.toString()),
+                        content: Text("Token expired"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Go back'),
+                          ),
+                        ],
+                      ));
             }
           });
     } catch (e) {
       showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(e.toString()),
-          content: Text("Token expired"),
-          actions: [
-            TextButton(
-              onPressed: () =>  Navigator.pop(context),
-              child: Text('Got it'),
-            ),
-          ],
-        )
-      );
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text(e.toString()),
+                content: Text("Token expired"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Got it'),
+                  ),
+                ],
+              ));
     }
 
     setState(() {
@@ -117,6 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void handleRememberMe(bool? value) async {
     print("Remember me");
+      print(_passwordController.text.toString());
 
     print("the value");
     print(value);
@@ -124,7 +124,7 @@ class _SignInScreenState extends State<SignInScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("remember_me", value);
     prefs.setString("email", _emailController.text);
-    prefs.setString("password", _passwordController.text);
+    prefs.setString("password", _passwordController.text.toString());
 
     setState(() {
       isChecked = value;

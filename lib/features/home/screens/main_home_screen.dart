@@ -40,7 +40,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Future<User> getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("x-auth-token");
-    User nullUser = User(username: "", email: "", password: "", token: "");
+    User nullUser = User(fullName: "", email: "", password: "", token: "");
 
     // set the x-auth-token to "" to get the new token for the new signed in user
     if (token == null) {
@@ -59,7 +59,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           email: json.decode(tokenRes.body)['email'],
           password: "",
           token: "",
-          username: json.decode(tokenRes.body)['username']);
+          fullName: json.decode(tokenRes.body)['username']);
       final UserProvider usr =
           Provider.of<UserProvider>(context, listen: false);
       switch (tokenRes.statusCode) {
@@ -164,7 +164,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
               children: [
                 /// header
                 TopHeader(
-                    username: user.username,
+                    username: user.fullName,
                     circleAvatarImage: "assets/images/rindra-photo.png"),
 
                 CardHeader(
