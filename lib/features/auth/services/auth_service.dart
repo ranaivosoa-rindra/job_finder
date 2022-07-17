@@ -32,7 +32,7 @@ class AuthService {
   }
 
   Future<http.Response> getJobsResponse() {
-    return http.get(Uri.parse("$uri/jobs/all"),
+    return http.get(Uri.parse("http://192.168.88.31:1337/api/jobs"),
         headers: <String, String>{'accept': 'application/json'});
   }
 }

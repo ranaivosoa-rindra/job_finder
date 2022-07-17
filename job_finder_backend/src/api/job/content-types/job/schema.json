@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jobs",
+  "info": {
+    "singularName": "job",
+    "pluralName": "jobs",
+    "displayName": "job",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "job_title": {
+      "type": "string"
+    },
+    "entreprise": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "mounthly_salary": {
+      "type": "string"
+    },
+    "experience": {
+      "type": "string"
+    },
+    "job_type": {
+      "type": "string"
+    }
+  }
+}

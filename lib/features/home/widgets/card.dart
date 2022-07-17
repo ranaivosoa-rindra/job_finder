@@ -10,22 +10,22 @@ class JobCard extends StatefulWidget {
   final Image? logoImage;
   final bool isImage;
   final String jobTitle;
-  final String jobCompany;
-  final String jobLocation;
-  final String salary;
-  final String personType;
+  final String entreprise;
+  final String location;
+  final String mounthlySalary;
+  final String experience;
   final String jobType;
   const JobCard(
       {Key? key,
       this.icon,
       this.logoImage,
       required this.jobTitle,
-      required this.jobLocation,
-      required this.salary,
-      required this.personType,
+      required this.location,
+      required this.mounthlySalary,
+      required this.experience,
       required this.jobType,
       required this.isImage, 
-      required this.jobCompany})
+      required this.entreprise})
       : super(key: key);
 
   @override
@@ -81,7 +81,7 @@ class _JobCardState extends State<JobCard> {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                         "${widget.jobCompany} . ${widget.jobLocation}",
+                         "${widget.entreprise} . ${widget.location}",
                           style: GoogleFonts.dmSans(
                             color: Color(0xFF524B6B).withOpacity(0.8),
                             fontSize: 14,
@@ -100,7 +100,7 @@ class _JobCardState extends State<JobCard> {
           Row(
             children: [
               Text(
-                "\$${widget.salary}",
+                "\$${widget.mounthlySalary}",
                 style: GoogleFonts.dmSans(
                     color: Color(0xFF150B3D),
                     fontSize: 15,
@@ -118,7 +118,7 @@ class _JobCardState extends State<JobCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              JobButton(jobSpecificity: widget.personType),
+              JobButton(jobSpecificity: widget.experience),
               JobButton(jobSpecificity: widget.jobType),
               ApplyButton(),
             ],

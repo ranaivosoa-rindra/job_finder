@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 String uri = "https://testapp-to-lrn-fastap.herokuapp.com";
 String url = "https://retoolapi.dev/h0ldEq";
+String myUri = "http://localhost:1337/api";
 
 class GlobalVariables {
   // colors

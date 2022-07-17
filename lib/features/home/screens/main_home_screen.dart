@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, avoid_print, use_build_context_synchronously, prefer_final_fields
 
 import 'dart:convert';
 
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:job_finder/common/shared/fullscreen_loading.dart';
 import 'package:job_finder/common/utils/error_handler.dart';
@@ -30,11 +31,13 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   AuthService auth = AuthService();
+  List<Job> _jobs = [];
+  late AsyncMemoizer _memoizer;
 
   @override
   void initState() {
     super.initState();
-    getJob();
+    _memoizer = AsyncMemoizer();
   }
 
   Future<User> getUserData() async {
@@ -110,24 +113,33 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     return nullUser;
   }
 
-  void getJob() async {
-    Job job = Job(
-        title: "",
-        company: "",
-        companyUrl: "",
-        location: "",
-        description: "",
-        datePosted: "");
-    print("----HELLLO GET JOB----");
-    http.Response jobRes = await auth.getJobsResponse();
-    print("----JOB----");
-    print(jobRes.body);
-    print(jobRes.body.runtimeType);
+  _fetchData() async {
+    print(_jobs.length);
+    return _memoizer.runOnce(() async {
+      print("----HELLLO GET JOB----");
+      http.Response jobRes = await auth.getJobsResponse();
+      print("----JOB----");
+      print(jobRes.body);
+      print(jobRes.body.runtimeType);
 
-    print("----------DECODED------------");
-    var b = jobRes.body;
-    var decoded = json.decode(b);
-    print(decoded[1]);
+      print("----------DECODED------------");
+      var b = jobRes.body;
+      var decoded = json.decode(b);
+      print(decoded['data'][0]['attributes']);
+
+      for (var i = 0; i < decoded['data'].length; i++) {
+        _jobs.add(Job(
+            job_title: decoded['data'][i]['attributes']["job_title"],
+            entreprise: decoded['data'][i]['attributes']['entreprise'],
+            location: decoded['data'][i]['attributes']['location'],
+            experience: decoded['data'][i]['attributes']['experience'],
+            job_type: decoded['data'][i]['attributes']['job_type'],
+            mounthly_salary: decoded['data'][i]['attributes']
+                ['mounthly_salary']));
+      }
+      print(_jobs[0].job_title);
+      return _jobs;
+    });
   }
 
   @override
@@ -198,16 +210,35 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
                   height: 20,
                 ),
 
-                JobCard(
-                  isImage: false,
-                  jobCompany: 'Google inc',
-                  jobLocation: 'California, USA',
-                  jobTitle: 'Product designer',
-                  jobType: 'Full Time',
-                  personType: 'Senior designer',
-                  salary: '15',
-                  icon: Icon(Icons.apple),
-                ),
+                    FutureBuilder(
+                        future: _fetchData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return CircularProgressIndicator();
+                          } else {
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: _jobs.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    margin: EdgeInsets.only(bottom: 20),
+                                    child: JobCard(
+                                      entreprise: _jobs[index].entreprise,
+                                      location: _jobs[index].location,
+                                      isImage: false,
+                                      jobTitle: _jobs[index].job_title,
+                                      jobType: _jobs[index].job_type,
+                                      experience: _jobs[index].experience,
+                                      mounthlySalary:
+                                          _jobs[index].mounthly_salary,
+                                      icon: Icon(Icons.apple),
+                                    ),
+                                  );
+                                });
+                          }
+                        }),
               ],
             ),
           ),
